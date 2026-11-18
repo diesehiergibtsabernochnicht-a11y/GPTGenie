@@ -25,7 +25,7 @@ Last reviewed: 2026-11-18. Results are separated by functional, visual and opera
 | Backup/restore | Source inspection | Version 3 SHA-256 checksum, schema validation, atomic IndexedDB restore, unsaved draft and Fast Scan checkpoint; tests cover tampering and malformed input | pass (unit-level) | Browser storage quota, interrupted transaction and cross-browser restore tests |
 | Offline PWA | Changelog and product docs | Manifest uses relative scope/start URL; Vite base-aware SW registration; SW confines cache to scope and only app-shell-fallbacks navigations | partial | Test root and /GPTGenie/ deploy paths, offline install/update and real browser reload |
 | Accessibility/responsive | Target supports mobile/tablet/stylus | CSS/source inspection only | unknown | Keyboard, focus, screen reader, phone/tablet/desktop tests |
-| Typecheck/tests/build | GitHub Actions | Latest observed successful CI: run 162 at 6f074a6; subsequent persistence and PWA changes are queued/running | unknown | Verify newest CI run after all changes |
+| Typecheck/tests/build | GitHub Actions | CI run 90 at 90f5300 passed typecheck, Vitest and root/Pages builds; later artifact-workflow changes still running | partial | Verify newest CI run and both uploaded Goodnotes artifacts |
 | GitHub Pages | Vite/GitHub docs | Vite supports /GPTGenie/ build base; manifest and service worker now use relative/scoped paths; no deployment workflow yet | partial (build path prepared) | Finish app parity and acceptance, add deploy workflow and enable Pages source in Settings |
 
 ## Test execution policy
