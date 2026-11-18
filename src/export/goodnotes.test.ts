@@ -20,9 +20,29 @@ const glyph: Glyph = {
     ],
   }],
 };
+function readVarint(data: Uint8Array, start: number) {
+  let value = 0, shift = 0, pos = start;
+  while (pos < data.length) { const b = data[pos++]; value |= (b & 127) << shift; if (b < 128) return { value, next: pos }; shift += 7; }
+  throw new Error('invalid varint');
+}
+function delimited(data: Uint8Array) {
+  const out: Uint8Array[] = []; let pos = 0;
+  while (pos < data.length) { const n = readVarint(data, pos); pos = n.next; out.push(data.slice(pos, pos + n.value)); pos += n.value; }
+  return out;
+}
+function fields(data: Uint8Array) {
+  const out: { number: number; wire: number; value: Uint8Array | number }[] = []; let pos = 0;
+  while (pos < data.length) {
+    const k = readVarint(data, pos); pos = k.next; const number = k.value >> 3, wire = k.value & 7;
+    if (wire === 0) { const v = readVarint(data, pos); pos = v.next; out.push({ number, wire, value: v.value }); }
+    else if (wire === 2) { const n = readVarint(data, pos); pos = n.next; out.push({ number, wire, value: data.slice(pos, pos + n.value) }); pos += n.value; }
+    else throw new Error('unexpected wire type in test fixture');
+  }
+  return out;
+}
 
 describe('Goodnotes archive writer', () => {
-  it('creates a ZIP notebook with an indexed page, PDF background and native stroke records', async () => {
+  it('writes indexed pages, background PDF and a native TPL stroke object', async () => {
     const blob = await makeGoodnotes('a', 'Writer test', settings, [glyph]);
     const archive = unzipSync(new Uint8Array(await blob.arrayBuffer()));
     const names = Object.keys(archive);
@@ -30,12 +50,27 @@ describe('Goodnotes archive writer', () => {
     expect(names).toContain('index.events.pb');
     expect(names).toContain('index.attachments.pb');
     expect(names).toContain('schema.pb');
-    expect(names.some(n => n.startsWith('notes/'))).toBe(true);
-    expect(names.some(n => n.startsWith('attachments/'))).toBe(true);
     const pagePath = names.find(n => n.startsWith('notes/'))!;
-    expect(archive[pagePath].length).toBeGreaterThan(100);
+    const pageRecords = delimited(archive[pagePath]);
+    expect(pageRecords).toHaveLength(2);
+    const body = fields(pageRecords[1]).find(f => f.number === 7)!.value as Uint8Array;
+    const strokePayload = fields(body);
+    const frame = strokePayload.find(f => f.number === 2)!.value as Uint8Array;
+    expect(new TextDecoder().decode(frame.slice(0, 4))).toBe('bv41');
+    expect(new TextDecoder().decode(frame.slice(-4))).toBe('bv4$');
+    const rawSize = new DataView(frame.buffer, frame.byteOffset + 4, 4).getUint32(0, true);
+    expect(rawSize).toBeGreaterThan(100);
+    const events = delimited(archive['index.events.pb']);
+    expect(events).toHaveLength(6);
     const attachmentPath = names.find(n => n.startsWith('attachments/'))!;
     expect(new TextDecoder().decode(archive[attachmentPath].slice(0, 4))).toBe('%PDF');
-    expect(new TextDecoder().decode(archive['index.events.pb'].slice(0, 1))).not.toBe('');
+  });
+
+  it('emits a page-event group and note file for each composed page', async () => {
+    const blob = await makeGoodnotes('x '.repeat(900), 'Two page test', settings, []);
+    const archive = unzipSync(new Uint8Array(await blob.arrayBuffer()));
+    const noteFiles = Object.keys(archive).filter(n => n.startsWith('notes/'));
+    expect(noteFiles.length).toBeGreaterThan(1);
+    expect(delimited(archive['index.events.pb']).length).toBe(2 + noteFiles.length * 4);
   });
 });
