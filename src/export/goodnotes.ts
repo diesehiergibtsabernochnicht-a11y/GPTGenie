@@ -145,14 +145,14 @@ function renderThumbnail(page: LayoutPage, options: ExportOptions): Uint8Array {
   canvas.width = 420; canvas.height = Math.round(page.height * scale);
   const ctx = canvas.getContext('2d'); if (!ctx) return new Uint8Array();
   ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
-  const gap = (options.ruleSpacing ?? options.fontSize * options.lineSpacing) * scale, style = options.style ?? 'plain';
+  const gap = (options.ruleSpacing ?? options.fontSize * options.lineSpacing) * scale, style = options.style ?? 'plain', left=(options.marginLeft??options.margin)*scale,right=(options.marginRight??options.margin)*scale,top=(options.marginTop??options.margin)*scale,bottom=(options.marginBottom??options.margin)*scale;
   ctx.strokeStyle = options.backgroundColor ?? '#d5dce5'; ctx.fillStyle = ctx.strokeStyle; ctx.lineWidth = .6;
-  if (style !== 'plain') for (let y = options.margin * scale; y < canvas.height - options.margin * scale; y += gap) {
-    if (style.startsWith('dotted') || style === 'dotted') for (let x = options.margin * scale; x < canvas.width - options.margin * scale; x += gap) { ctx.beginPath(); ctx.arc(x, y, .8, 0, Math.PI * 2); ctx.fill(); }
-    else { ctx.beginPath(); ctx.moveTo(options.margin * scale, y); ctx.lineTo(canvas.width - options.margin * scale, y); ctx.stroke(); }
+  if (style !== 'plain') for (let y = top; y < canvas.height - bottom; y += gap) {
+    if (style.startsWith('dotted') || style === 'dotted') for (let x = left; x < canvas.width - right; x += gap) { ctx.beginPath(); ctx.arc(x, y, .8, 0, Math.PI * 2); ctx.fill(); }
+    else { ctx.beginPath(); ctx.moveTo(left, y); ctx.lineTo(canvas.width - right, y); ctx.stroke(); }
   }
-  if (style.startsWith('squared') || style === 'grid') for (let x = options.margin * scale; x < canvas.width - options.margin * scale; x += gap) { ctx.beginPath(); ctx.moveTo(x, options.margin * scale); ctx.lineTo(x, canvas.height - options.margin * scale); ctx.stroke(); }
-  if (options.marginLine) { ctx.strokeStyle = '#dfaaaa'; ctx.beginPath(); ctx.moveTo((options.margin - 12) * scale, 0); ctx.lineTo((options.margin - 12) * scale, canvas.height); ctx.stroke(); }
+  if (style.startsWith('squared') || style === 'grid') for (let x = options.margin * scale; x < canvas.width - options.margin * scale; x += gap) { ctx.beginPath(); ctx.moveTo(x, top); ctx.lineTo(x, canvas.height - bottom); ctx.stroke(); }
+  if (options.marginLine) { ctx.strokeStyle = '#dfaaaa'; ctx.beginPath(); ctx.moveTo(((options.marginLeft??options.margin) - 12) * scale, 0); ctx.lineTo(((options.marginLeft??options.margin) - 12) * scale, canvas.height); ctx.stroke(); }
   for (const s of page.strokes) {
     if (!s.points.length) continue; ctx.strokeStyle = s.color; ctx.globalAlpha = s.opacity; ctx.lineWidth = Math.max(.4, s.width * scale); ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.beginPath(); ctx.moveTo(s.points[0].x * scale, s.points[0].y * scale);
     for (let i = 1; i < s.points.length; i++) ctx.lineTo(s.points[i].x * scale, s.points[i].y * scale);
