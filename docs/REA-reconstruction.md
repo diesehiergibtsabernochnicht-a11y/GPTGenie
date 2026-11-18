@@ -3,7 +3,7 @@
 - Target: https://www.gptgenie.pro/
 - Evidence date: 2026-11-18
 - Rebuild repository: diesehiergibtsabernochnicht-a11y/GPTGenie
-- Stack: React 19, TypeScript, Vite, IndexedDB, Canvas Pointer Events, vector layout engine, pdf-lib and PWA shell.
+- Stack: React 19, TypeScript, Vite, IndexedDB, Canvas Pointer Events, shared vector layout, SVG preview, pdf-lib, fflate and PWA shell.
 - Rebuild approach: independent implementation from public UI, first-party guides/changelog, user-supplied export samples and public format research.
 - Classification: public UI/docs are observed product evidence; undocumented interactions and internal APIs remain unknown; the local-first data model and app architecture are proposed.
 
@@ -11,22 +11,22 @@
 
 - No server, account system, AI provider, telemetry or remote generation dependency.
 - The workspace remains local to the browser and is backed up as a portable JSON file.
-- Glyph samples retain vector stroke points and PNG thumbnails.
-- PDF output is generated locally from vector glyphs and page templates.
-- Native Goodnotes export is a required parity feature, not yet integrated in the repository. A one-page experimental archive imported without an error, but it was constructed by adapting the supplied fixture's package structure and identifiers. It is not evidence of a reusable clean writer.
-- Secondary native exporters are also not implemented.
+- Glyph samples retain vector stroke points, PNG thumbnails and a writing-baseline metric.
+- Preview, PDF and experimental Goodnotes export share the same text composition engine.
+- The experimental Goodnotes writer emits a multi-page ZIP archive with event/index records, a separate PDF background attachment and TPL stroke objects. It is structurally tested in CI but has not yet been imported into Goodnotes from the current app.
+- Secondary native exporters are not implemented.
 - Do not claim recovered original source code.
 
 ## Current implementation status
 
-- Implemented foundation: character capture, vector stroke storage, variants in data model, basic Fast Scan, initial script sets, baseline metadata for new samples, text composition, multipage PDF, paper templates, IndexedDB, JSON backup/restore and PWA shell.
-- Partial: variant editing, missing-character handling, mathematical shorthand, paper alignment and settings.
-- Absent: full page editor, actual vector preview, full settings parity, 50+ scripts and shaping, stacked equation layout, reusable Goodnotes serializer and all secondary native exporters.
-- See REA-feature-inventory.md and REA-backlog.md for feature-level detail.
+- Implemented foundation: character capture, vector stroke storage, variants in data model, Fast Scan, initial script sets, baseline metadata, text composition, SVG scene preview with page navigation, multipage PDF, paper templates, IndexedDB, JSON backup/restore and PWA shell.
+- Partial: variant editing, missing-character UX, mathematical shorthand, paper alignment, settings and experimental Goodnotes serialization.
+- Absent: full page editor, full settings parity, 50+ scripts and shaping, stacked equation layout, destination-app validated native exports and other notebook writers.
+- See REA-feature-inventory.md, REA-workflows.md, REA-verification.md and REA-backlog.md for feature-level detail.
 
 ## Verification
 
-See REA-verification.md. CI typecheck/build success is a compile gate only. Browser, tablet/stylus, storage, PDF, Goodnotes editability, offline and screenshot comparison remain unknown until exercised.
+CI typecheck, unit tests and production build passed at commit 412687a. Later commits must rerun. This is a compile/test gate, not browser QA. Goodnotes import/editability, browser, tablet/stylus, storage, PDF visual comparison, offline and screenshot comparison remain unknown until exercised.
 
 ## Material limitations
 
