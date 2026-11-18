@@ -29,6 +29,8 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [ ] Bold/highlight markup and table rendering.
 - [x] Basic spacing, baseline jitter, margins and line spacing.
 - [x] Four independent margins, line slope/wave, rule snapping, margin irregularity and up to 10 presets.
+- [x] One local PNG/JPEG paper background with zoom, rotation and X/Y positioning, included in PDF/Goodnotes background.
+- [ ] Saved background collection and richer background crop/fit controls.
 - [ ] More natural left-margin shaping and additional layout controls.
 
 ## P2 — page editor
