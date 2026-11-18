@@ -17,4 +17,4 @@ export function normalizeMath(input:string):string{
  s=s.replace(/\\left|\\right/g,"").replace(/[{}]/g,"");
  return s;
 }
-export const MATH_INSERTS=[["x²","x^2"],["x₁","x_1"],["√","\\sqrt{x}"],["a⁄b","\\frac{a}{b}"],["·","\\cdot"],["π","\\pi"],["≤","\\le"],["≥","\\ge"],["≠","\\neq"],["∑","\\sum"],["∞","\\infty"],["→","\\rightarrow"]] as const;
+export const MATH_INSERTS=[["x²","x^2"],["x₁","x_1"],["√","\\sqrt{x}"],["a⁄b","\\frac{a}{b}"],["·","\\cdot"],["π","\\pi"],["≤","\\le"],["≥","\\ge"],["≠","\\neq"],["∑","\\sum"],["∞","\\infty"],["→","\\rightarrow"],["Pythagoras","a^2+b^2=c^2"],["Kreisfläche","A=\\pi r^2"],["Geschwindigkeit","v=\\frac{s}{t}"],["Kraft","F=m\\cdot a"],["Prozent","W=G\\cdot\\frac{p}{100}"]] as const;
