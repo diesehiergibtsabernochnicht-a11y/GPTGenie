@@ -12,7 +12,7 @@ const legacyBackup = {
   exportedAt: '2026-11-18T00:00:00.000Z',
   settings: { ink: '#123456' },
   glyphs: [glyph],
-  documents: [],
+  documents: [{ id: 'd1', title: 'Editable page', text: 'a', updatedAt: 1, edits: [[{ id: 'e1', tool: 'pen', color: '#123456', width: 2, opacity: 1, points: [{ x: 1, y: 2, pressure: 1, time: 0, tiltX: 0, tiltY: 0 }, { x: 3, y: 4, pressure: 1, time: 1, tiltX: 0, tiltY: 0 }] }]] }],
   presets: [],
   fastScan: { queue: ['a', 'b'], index: 1, script: 'de' },
 };
@@ -24,6 +24,7 @@ describe('workspace backup and restore', () => {
     expect(backup.version).toBe(3);
     expect(backup.integrity.algorithm).toBe('SHA-256');
     expect(backup.fastScan?.index).toBe(1);
+    expect(backup.documents[0].edits?.[0]).toHaveLength(1);
     expect(backup.integrity.digest).toMatch(/^[a-f0-9]{64}$/);
   });
 
