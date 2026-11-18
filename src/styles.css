@@ -24,3 +24,6 @@
 .formula-tools button:hover{background:#edf1f8;border-color:#cbd3e3}
 .check-setting{display:flex;align-items:center;justify-content:space-between;font-size:10px;color:#929aaa}
 .dark .formula-tools{border-color:#394257}.dark .formula-tools button{background:#252d3d;border-color:#3b4559;color:#e0e5ef}
+
+/* The visible baseline is also stored as glyph metrics for consistent line placement. */
+.draw-wrap .baseline{position:absolute;left:0;right:0;top:70%;border-top:1px solid #e4a0a0;z-index:1;pointer-events:none}
