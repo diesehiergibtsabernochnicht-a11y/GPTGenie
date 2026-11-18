@@ -1,7 +1,7 @@
 # GPTGenie — REA feature inventory
 
 Target: https://www.gptgenie.pro/
-Evidence date: 2026-11-18. Evidence is based on the public app's indexed frontend UI and first-party product documentation, not an interactive browser capture.
+Evidence date: 2026-11-18. Evidence is based on indexed public frontend UI, first-party documentation and the user's Goodnotes test samples, not interactive browser capture.
 Classification: Observed = exposed in UI or documented by GPTGenie; inferred = implied but not exercised; proposed = our design; unknown = needs runtime validation.
 
 ## Workflow and character capture
@@ -23,12 +23,12 @@ Classification: Observed = exposed in UI or documented by GPTGenie; inferred = i
 ## Text composition and layout
 - Multiline text, paragraphs, line breaks and multipage generation.
 - Bold markup with **text**; coloured marker markup such as ==text== and ==green:text==.
-- Mathematical shorthand for fractions, superscripts and roots. The rebuild now accepts a useful LaTeX-like subset (fractions, roots, powers/subscripts, Greek letters and operators) and provides a separate math-symbol handwriting set; stacked formula layout remains future work.
+- Mathematical shorthand for fractions, superscripts and roots. The rebuild has basic LaTeX-like normalization and a symbol palette, but stacked fractions/scalable roots are not implemented.
 - Settings: ink colour, character size, character spacing, word spacing, baseline/position irregularity, variation strength, line spacing, optional rule snapping, line slope/wave, left/right/top/bottom margins and left-margin irregularity.
 - Up to 10 saved settings presets, live preview and reset/defaults.
 
 ## Paper, preview and editor
-- Blank, lined, grid, dotted and coloured paper; custom image background with move/zoom/rotate and saved background collection. The rebuild now offers wide/narrow ruled, squared and dotted stock, with writing baseline/size adapting to the selected spacing and adjustable paper-line colour/margin guide.
+- Blank, lined, grid, dotted and coloured paper; custom image background with move/zoom/rotate and saved background collection.
 - Full-screen preview, zoom, page navigation, vertical multipage canvas and active-page tracking.
 - Editor tools: select, area/lasso, text, pen, highlighter, eraser, photo.
 - Selection supports move, resize, duplicate, cut, copy, paste and delete; inspector exposes ink colour, X/Y, width and height.
@@ -39,39 +39,31 @@ Classification: Observed = exposed in UI or documented by GPTGenie; inferred = i
 
 ## Export, offline and storage
 - PDF generation and editing.
-- First-party guide documents native Goodnotes export: generated letters become separate editable pen strokes; paper stays a separate background; page count follows source PDF; editor pen/highlighter/photo additions are carried into the Goodnotes file.
-- Changelog documents Samsung Notes, OneNote, Notability, Freenotes and Noteful targets.
-- Browser-only Goodnotes conversion; no account or server required for generation.
+- First-party guides claim native Goodnotes, Samsung Notes, OneNote, Notability, Freenotes and Noteful exports. Generated letters become editable native pen strokes; paper stays separate; editor additions/photos are retained.
+- Browser-only conversion; no account or server required for native export.
 - Offline drawing, text composition and PDF generation; installable PWA and performance mode.
 - Original product stores guest data temporarily in browser and account users can persist glyphs. Our rebuild intentionally remains local-only.
 
 ## Goodnotes format evidence
-Goodnotes officially imports .goodnotes documents and .goodnotes.zip backups. Independent research identifies a ZIP container with page records, protobuf indexes, attachments, Apple-framed LZ4 and TPL stroke geometry. Parser implementations are useful format evidence but are not writer specifications. A valid writer must be tested by opening a generated file in Goodnotes and confirming independent stroke selection/eraser behaviour, backgrounds, attachments and page ordering.
+Goodnotes officially imports .goodnotes documents and .goodnotes.zip backups. The inspected user samples and public parser research support a ZIP container with page records, protobuf indexes, attachments, Apple-framed LZ4 and TPL stroke geometry. The one-page experimental candidate imported without error, but it reused page/attachment identifiers and the background PDF from the supplied fixture. No clean reusable writer exists in the app yet. A valid writer must be tested for independent stroke selection/erasure, backgrounds, attachments and page ordering.
+
+## Rebuild status snapshot
+- Implemented foundation: vector glyph capture, multiple samples in the data model, Fast Scan, initial script sets, basic text composition, multipage PDF, paper templates, IndexedDB and JSON backup/restore.
+- Partial: saved-variant editing, missing glyph UX, maths, paper alignment and settings.
+- Absent: full PDF editor, true vector preview, full settings parity, 50+ scripts/shaping, full equation layout, reusable Goodnotes writer and secondary native exporters.
+- Exact acceptance criteria and pass/fail/unknown results are maintained in docs/REA-verification.md.
 
 ## Architecture proposed for this rebuild
 - Browser-only React/TypeScript; no server, accounts, telemetry or remote AI calls.
 - IndexedDB with schema migrations, atomic autosave, quota handling and full backup/restore.
-- Stroke-native glyph model: point x/y, pressure, tilt, timestamp, brush, colour and width; not just bitmap snapshots.
+- Stroke-native glyph model: point x/y, pressure, tilt, timestamp, brush, colour and width.
 - Glyph registry by script, language, Unicode code point, contextual form and variant.
-- Deterministic seeded layout/variation engine using physical page units (points/mm).
+- Deterministic seeded layout/variation engine using physical page units (points/mm), with per-glyph baseline metrics.
 - Shared scene graph for pages, glyph strokes, annotations, images, paper and text; PDF and Goodnotes exporters consume the same graph.
 - Versioned single-file JSON backup including images, documents, glyphs, presets and settings, with integrity hashes.
 - PWA shell and offline asset cache; all app fonts bundled locally.
 
-## Acceptance criteria
-1. Complete German scan set and accurate missing-character report.
-2. Multiple glyph variants create natural, reproducible variation.
-3. Multiline/multipage layout fits physical margins and paper templates.
-4. RTL scripts and contextual glyph forms render correctly.
-5. Editor objects support select/move/resize/copy/delete/erase/undo.
-6. PDF page count and geometry match preview.
-7. Goodnotes file opens in Goodnotes; letters remain independently editable; backgrounds are separate; photos and editor annotations survive.
-8. Full workspace backup round-trips every record and embedded asset offline.
-9. App works offline after initial install.
-10. Desktop, tablet and phone; keyboard, touch and stylus paths tested.
-
 ## Unknowns and limitations
 - No interactive browser, screenshots, DevTools, source-map or HAR capture was available in this environment.
 - No original source code or local app bundle was recovered.
-- A minimal independently generated Goodnotes candidate has now been imported by the user without an error. Rich page composition, independently selectable/erasable glyphs, backgrounds and multipage export still require real-app validation.
-- Other notebook targets each need independent format research and sample-based validation.
+- Native writer editability and destination-app behaviour remain unverified beyond one Goodnotes import without an error.
