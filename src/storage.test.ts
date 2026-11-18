@@ -14,6 +14,7 @@ const legacyBackup = {
   glyphs: [glyph],
   documents: [],
   presets: [],
+  fastScan: { queue: ['a', 'b'], index: 1, script: 'de' },
 };
 
 describe('workspace backup and restore', () => {
@@ -22,6 +23,7 @@ describe('workspace backup and restore', () => {
     const backup = await exportWorkspace();
     expect(backup.version).toBe(3);
     expect(backup.integrity.algorithm).toBe('SHA-256');
+    expect(backup.fastScan?.index).toBe(1);
     expect(backup.integrity.digest).toMatch(/^[a-f0-9]{64}$/);
   });
 
