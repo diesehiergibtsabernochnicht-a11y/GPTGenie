@@ -8,7 +8,10 @@ describe('glyph registry', () => {
   it('reports missing symbols even when they are outside the active script', () => {
     expect(getMissing('aπ√', GERMAN_CHARS, [{ char: 'a' }])).toEqual(['π', '√']);
   });
-  it('builds missing-only Fast Scan queues including unsupported text symbols', () => {\n    expect(buildFastScanQueue(['a', 'b', ' '], [{ char: 'a' }], ['π', 'π'], true)).toEqual(['b', 'π']);\n  });\n  it('does not report whitespace as missing', () => {
+  it('builds missing-only Fast Scan queues including unsupported text symbols', () => {
+    expect(buildFastScanQueue(['a', 'b', ' '], [{ char: 'a' }], ['π', 'π'], true)).toEqual(['b', 'π']);
+  });
+  it('does not report whitespace as missing', () => {
     expect(getMissing('a b', GERMAN_CHARS, [{ char: 'a' }, { char: 'b' }])).toEqual([]);
   });
 });
