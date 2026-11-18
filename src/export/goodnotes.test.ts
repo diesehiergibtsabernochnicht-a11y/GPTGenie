@@ -16,9 +16,9 @@ const glyph: Glyph = {
   strokes: [{
     id: 'stroke-a', tool: 'pen', color: '#25304a', width: 2.4, opacity: 1,
     points: [
-      { x: 92, y: 128, pressure: 1, time: 0, tiltX: 0, tiltY: 0 },
-      { x: 108, y: 116, pressure: 1, time: 1, tiltX: 0, tiltY: 0 },
-      { x: 126, y: 108, pressure: 1, time: 2, tiltX: 0, tiltY: 0 },
+      { x: 92, y: 228, pressure: 1, time: 0, tiltX: 0, tiltY: 0 },
+      { x: 108, y: 220, pressure: 1, time: 1, tiltX: 0, tiltY: 0 },
+      { x: 126, y: 214, pressure: 1, time: 2, tiltX: 0, tiltY: 0 },
     ],
   }],
 };
