@@ -1,6 +1,6 @@
 import { zipSync } from 'fflate';
 import { PDFDocument } from 'pdf-lib';
-import type { Glyph } from '../storage';
+import type { Glyph, InkStroke } from '../storage';
 import { composeText, type LayoutPage } from '../engine/layout';
 import { drawPaper, type ExportOptions } from '../pdf';
 
@@ -160,8 +160,9 @@ function renderThumbnail(page: LayoutPage, options: ExportOptions): Uint8Array {
   }
   return fromBase64(canvas.toDataURL('image/jpeg', .82).split(',')[1]);
 }
-export async function makeGoodnotes(text: string, title: string, options: ExportOptions, glyphs: Glyph[] = []): Promise<Blob> {
+export async function makeGoodnotes(text: string, title: string, options: ExportOptions, glyphs: Glyph[] = [], edits: InkStroke[][] = []): Promise<Blob> {
   const pages = composeText(text, title, options, glyphs);
+  pages.forEach((page, index) => { page.strokes.push(...(edits[index] ?? []).map(s => ({ points: s.points, color: s.color, width: s.width, opacity: s.opacity, tool: s.tool }))); });
   const pdf = await PDFDocument.create(); pdf.setTitle(title); pdf.setCreator('GPTGenie');
   for (const model of pages) { const page = pdf.addPage([model.width, model.height]); drawPaper(page, model.width, model.height, options); }
   const pdfBytes = await pdf.save(), docId = randomUuid(), attachmentId = randomUuid(), pageIds = pages.map(() => randomUuid());
