@@ -49,7 +49,7 @@ Checks:
 - Experimental page annotation editor: pen, marker, select/move, whole-stroke erase, copy/paste, delete and undo/redo. Added strokes are saved with documents and included in PDF/Goodnotes exports.
 - Multipage PDF export from the same composition engine.
 - Experimental native Goodnotes archive writer: ZIP package, event/index records, PDF paper attachment and native TPL stroke objects. It is not yet validated in Goodnotes from the current app code; pressure/brush fidelity and editor objects remain limited.
-- Atomic IndexedDB autosave across the complete workspace, visible save/error state, transactional restore, and JSON backup with SHA-256 integrity validation, unsaved draft and Fast Scan checkpoint.
+- Atomic IndexedDB autosave across the complete workspace, visible save/error state, estimated browser storage usage, persistent-storage request, transactional restore, and JSON backup with SHA-256 integrity validation, unsaved draft and Fast Scan checkpoint.
 - PWA manifest and scoped same-origin service-worker cache; Vite builds are verified for both root hosting and the future `/GPTGenie/` GitHub Pages project path.
 
 ## Not yet implemented / not yet verified
