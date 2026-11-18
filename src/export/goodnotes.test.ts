@@ -67,7 +67,9 @@ describe('Goodnotes archive writer', () => {
     expect(new TextDecoder().decode(frame.slice(-4))).toBe('bv4$');
     const rawSize = new DataView(frame.buffer, frame.byteOffset + 4, 4).getUint32(0, true);
     expect(rawSize).toBeGreaterThan(100);
-    const secondBody = fields(pageRecords[3]).find(f => f.number === 7)!.value as Uint8Array;\n    expect(new TextDecoder().decode((fields(secondBody).find(f => f.number === 2)!.value as Uint8Array).slice(0, 4))).toBe('bv41');\n    const events = delimited(archive['index.events.pb']);
+    const secondBody = fields(pageRecords[3]).find(f => f.number === 7)!.value as Uint8Array;
+    expect(new TextDecoder().decode((fields(secondBody).find(f => f.number === 2)!.value as Uint8Array).slice(0, 4))).toBe('bv41');
+    const events = delimited(archive['index.events.pb']);
     expect(events).toHaveLength(6);
     const attachmentPath = names.find(n => n.startsWith('attachments/'))!;
     expect(new TextDecoder().decode(archive[attachmentPath].slice(0, 4))).toBe('%PDF');
