@@ -51,3 +51,16 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 ## Current status
 
 This repository is a working prototype and architecture foundation, not a complete GPTGenie recreation. The original product exposes a full PDF editor, richer settings, more than 50 scripts, several native exporters and polished responsive/stylus workflows. Those are not yet present here. The current Goodnotes writer is structurally tested in CI but has not yet been imported into Goodnotes from the app; the earlier user-confirmed import was for a fixture-derived test candidate.
+
+## Improvement backlog (REA decision record)
+
+| Priority | Observed problem | Proposed change | Expected benefit | Acceptance criterion | Dependency / effort |
+|---|---|---|---|---|---|
+| P0 | Preview, PDF and Goodnotes must remain geometrically identical | Keep one scene graph and shared physical-unit layout; add golden geometry tests | Prevents export/preview drift | Same fixture yields same page count, bounds and stroke coordinates in every renderer | Scene graph tests; medium |
+| P0 | Native Goodnotes schema is reconstructed from one sample and one page-event template | Validate current writer in Goodnotes; capture new fixtures for each brush and page operation | Avoids shipping an import-only or lossy exporter | Current app file imports; strokes independently select/move/recolour/erase; multipage round-trip matches | User Goodnotes test and additional fixtures; high |
+| P1 | Fast Scan and glyph variant state are not yet exercised in a browser | Test queue completion, skip, reload resume, variant edit/delete and quota failures | Prevents data loss in core capture workflow | Browser test suite covers empty/full/missing queues and persisted variants | Browser automation unavailable here; medium |
+| P1 | Maths normalization is inline and loses equation structure | Introduce formula AST and stacked fraction/root scene nodes | More natural school mathematics | Fractions, roots, superscripts and Greek symbols retain layout and remain editable | Scene graph extension; high |
+| P1 | RTL and non-Latin writing need shaping, not only Unicode glyph lookup | Add script-aware shaping and bidi pipeline | Correct reading order and contextual glyphs | Arabic/Hebrew mixed-direction fixtures render correctly | Unicode shaping dependency and extensive tests; high |
+| P2 | The target includes a full PDF editor; rebuild has no editor | Add selectable scene objects, transforms, lasso, tools, undo and page operations | Closes largest functional parity gap | Each editor tool has keyboard, pointer and touch acceptance tests | Shared scene graph; very high |
+| P2 | GitHub Pages project URLs and PWA root paths are not yet aligned | Configure Vite base, manifest, service worker scope and Pages deployment workflow | Stable public hosting and offline reload | Pages URL loads assets, refresh works, PWA installs and offline reload stays in project scope | Do only after app acceptance; medium |
+
