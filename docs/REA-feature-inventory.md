@@ -23,12 +23,12 @@ Classification: Observed = exposed in UI or documented by GPTGenie; inferred = i
 ## Text composition and layout
 - Multiline text, paragraphs, line breaks and multipage generation.
 - Bold markup with **text**; coloured marker markup such as ==text== and ==green:text==.
-- Mathematical shorthand for fractions, superscripts and roots.
+- Mathematical shorthand for fractions, superscripts and roots. The rebuild now accepts a useful LaTeX-like subset (fractions, roots, powers/subscripts, Greek letters and operators) and provides a separate math-symbol handwriting set; stacked formula layout remains future work.
 - Settings: ink colour, character size, character spacing, word spacing, baseline/position irregularity, variation strength, line spacing, optional rule snapping, line slope/wave, left/right/top/bottom margins and left-margin irregularity.
 - Up to 10 saved settings presets, live preview and reset/defaults.
 
 ## Paper, preview and editor
-- Blank, lined, grid, dotted and coloured paper; custom image background with move/zoom/rotate and saved background collection.
+- Blank, lined, grid, dotted and coloured paper; custom image background with move/zoom/rotate and saved background collection. The rebuild now offers wide/narrow ruled, squared and dotted stock, with writing baseline/size adapting to the selected spacing and adjustable paper-line colour/margin guide.
 - Full-screen preview, zoom, page navigation, vertical multipage canvas and active-page tracking.
 - Editor tools: select, area/lasso, text, pen, highlighter, eraser, photo.
 - Selection supports move, resize, duplicate, cut, copy, paste and delete; inspector exposes ink colour, X/Y, width and height.
@@ -73,5 +73,5 @@ Goodnotes officially imports .goodnotes documents and .goodnotes.zip backups. In
 ## Unknowns and limitations
 - No interactive browser, screenshots, DevTools, source-map or HAR capture was available in this environment.
 - No original source code or local app bundle was recovered.
-- Exact Goodnotes writer schema remains unverified until a synthetic file is opened in Goodnotes.
+- A minimal independently generated Goodnotes candidate has now been imported by the user without an error. Rich page composition, independently selectable/erasable glyphs, backgrounds and multipage export still require real-app validation.
 - Other notebook targets each need independent format research and sample-based validation.
