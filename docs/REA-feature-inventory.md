@@ -45,12 +45,12 @@ Classification: Observed = exposed in UI or documented by GPTGenie; inferred = i
 - Original product stores guest data temporarily in browser and account users can persist glyphs. Our rebuild intentionally remains local-only.
 
 ## Goodnotes format evidence
-Goodnotes officially imports .goodnotes documents and .goodnotes.zip backups. The inspected user samples and public parser research support a ZIP container with page records, protobuf indexes, attachments, Apple-framed LZ4 and TPL stroke geometry. The one-page experimental candidate imported without error, but it reused page/attachment identifiers and the background PDF from the supplied fixture. No clean reusable writer exists in the app yet. A valid writer must be tested for independent stroke selection/erasure, backgrounds, attachments and page ordering.
+Goodnotes officially imports .goodnotes documents and .goodnotes.zip backups. The inspected user samples and public parser research support a ZIP container with page records, protobuf indexes, attachments, Apple-framed LZ4 and TPL stroke geometry. The one-page experimental candidate imported without error, but it reused page/attachment identifiers and the background PDF from the supplied fixture. The app now contains an experimental repeatable writer that creates fresh IDs, per-page notes streams, page-event records and a separate PDF background attachment. It is structurally tested in CI but has not yet been imported into Goodnotes from the current app code; editability and cross-version compatibility remain unknown.
 
 ## Rebuild status snapshot
 - Implemented foundation: vector glyph capture, multiple samples in the data model, Fast Scan, initial script sets, basic text composition, multipage PDF, paper templates, IndexedDB and JSON backup/restore.
 - Partial: saved-variant editing, missing glyph UX, maths, paper alignment and settings.
-- Absent: full PDF editor, true vector preview, full settings parity, 50+ scripts/shaping, full equation layout, reusable Goodnotes writer and secondary native exporters.
+- Absent: full PDF editor, full settings parity, 50+ scripts/shaping, full equation layout, Goodnotes destination-app validation/brush fidelity and secondary native exporters. The vector preview and experimental Goodnotes writer are now present.
 - Exact acceptance criteria and pass/fail/unknown results are maintained in docs/REA-verification.md.
 
 ## Architecture proposed for this rebuild
