@@ -74,3 +74,15 @@ test('formula editor autosaves locally and exports a native Goodnotes notebook',
   await expect(page.locator('textarea.writing-area')).toHaveValue(formula);
   await page.context().setOffline(false);
 });
+
+test('mobile layout keeps the writing workflow inside a phone viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('./');
+  await page.getByRole('button', { name: /Create notes/ }).click();
+  const editor = page.locator('textarea.writing-area');
+  await expect(editor).toBeVisible();
+  await editor.fill('x^2 + \\frac{1}{2}');
+  await expect(page.locator('.preview-panel')).toBeVisible();
+  const documentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+  expect(documentWidth).toBeLessThanOrEqual(390);
+});
