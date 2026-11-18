@@ -6,8 +6,8 @@ A local-first handwriting studio. This repository is an active reconstruction of
 
 - Build and save a personal glyph library using mouse, touch or stylus.
 - Compose text from editable vector stroke samples.
-- Export multipage PDF locally.
-- Edit pages and export to native notebook formats as the scene graph and format writers mature.
+- Preview and export multipage PDF locally from the same vector layout engine.
+- Export an experimental native Goodnotes notebook with separate PDF paper and protobuf/TPL ink objects.
 - Store everything locally; one portable backup contains the complete workspace.
 
 ## Stack
@@ -15,28 +15,36 @@ A local-first handwriting studio. This repository is an active reconstruction of
 - React 19 + TypeScript + Vite
 - IndexedDB for local persistence
 - Canvas Pointer Events for pressure-aware handwriting capture
-- Shared vector layout engine
-- pdf-lib for PDF generation
+- Shared vector layout engine and SVG live preview
+- pdf-lib for PDF and Goodnotes background PDF generation
+- fflate for browser-side ZIP writing
+- Vitest unit tests
 - Vite PWA shell and service-worker asset cache
 
 ## Run
 
-```bash
-npm install
-npm run dev
-```
+    npm install
+    npm run dev
 
-Build with `npm run build`; check types with `npm run typecheck`.
+Checks:
+
+    npm run typecheck
+    npm test
+    npm run build
 
 ## Implemented in this branch
 
 - Three-stage workspace: handwriting, create notes, documents.
-- Sample glyph capture as vector point strokes plus PNG preview.
-- Character variants and character grid.
-- Fast Scan flow and missing-character report for included script sets.
-- Included sample character sets: German, English, Russian, Greek, Arabic, Hebrew and Japanese kana. This is not yet the full 50+ language coverage of the reference product.
-- Adaptive notebook stock: blank, wide/narrow ruled, squared and dotted paper; paper-line colour, margin guide and grid/rule spacing controls. Handwriting size and baseline spacing adapt to the selected stock.\n- German-friendly maths palette and LaTeX-like normalization for fractions, roots, powers/subscripts, common operators and Greek letters; dedicated math-symbol glyph set and German school-formula starters.
-- Shared vector text composition and multipage PDF export.
+- Sample glyph capture as vector point strokes plus PNG preview; new samples record a writing baseline.
+- Character variants in the data model and character grid.
+- Fast Scan with an explicit queue and missing-only scan.
+- Missing-glyph detection now includes symbols outside the selected script and exposes them in the character picker.
+- Included sample character sets: German, English, Russian, Greek, Arabic, Hebrew, Japanese kana and a maths set. This is not yet the full 50+ language coverage of the reference product.
+- Adaptive notebook stock: blank, wide/narrow ruled, squared and dotted paper; paper-line colour, margin guide and grid/rule spacing controls. Handwriting size and baseline spacing adapt to the selected stock.
+- German-friendly maths palette and LaTeX-like normalization for numeric fractions, roots, powers/subscripts, common operators and Greek letters. Stacked equation layout is not implemented.
+- Vector text composition, actual SVG handwriting preview and multipage preview navigation.
+- Multipage PDF export from the same composition engine.
+- Experimental native Goodnotes archive writer: ZIP package, event/index records, PDF paper attachment and native TPL stroke objects. It is not yet validated in Goodnotes from the current app code; pressure/brush fidelity and editor objects remain limited.
 - IndexedDB persistence and JSON workspace backup/restore.
 - PWA manifest and same-origin service-worker cache.
 
@@ -45,9 +53,8 @@ Build with `npm run build`; check types with `npm run typecheck`.
 - Full 50+ script catalogue, Arabic shaping, Hebrew bidi/mixed direction, contextual glyph forms and Japanese typesetting.
 - Proper stacked fractions, scalable equation layout, connected cursive and rich inline formatting.
 - Full multi-page PDF editor with lasso, transform, clipboard, partial eraser, image insertion and undo history.
-- Complete native Goodnotes export is not yet integrated into the app. A minimal independently generated .goodnotes candidate (one ruled page and one vector stroke) has been imported by the user without errors; multi-stroke glyphs, selectable/erasable handwriting, paper variations and multipage documents still need validation. The next step is connecting the proven minimal writer to the shared page scene graph. See docs/Goodnotes-format-research.md.
-- Samsung Notes, OneNote, Notability, Freenotes and Noteful writers.
-- Production browser QA, tablet/stylus QA and full Goodnotes editability/round-trip validation.
+- Goodnotes current-app import/editability/round-trip acceptance; other native exporters for Samsung Notes, OneNote, Notability, Freenotes and Noteful.
+- Production browser QA, tablet/stylus QA, offline QA and GitHub Pages deployment.
 
 ## Local data and backups
 
@@ -55,8 +62,8 @@ The app stores glyphs, vector strokes, documents, presets and settings in Indexe
 
 ## Privacy and offline
 
-The application does not require a backend, account, telemetry or AI provider. Its current UI and PDF generation run in the browser. The PWA service worker caches same-origin assets after first load; first installation still requires the app to be served once. No external font CDN is used.
+The application does not require a backend, account, telemetry or AI provider. Its current UI, PDF generation and experimental Goodnotes package writing run in the browser. The PWA service worker caches same-origin assets after first load; first installation still requires the app to be served once. No external font CDN is used.
 
 ## REA
 
-The REA 2.0 skill and reference files are vendored under `.agents/skills/rea`. Evidence inventory, limitations, acceptance criteria and backlog are in `docs/`.
+The REA 2.0 skill and reference files are vendored under .agents/skills/rea. Evidence inventory, workflow maps, limitations, acceptance criteria and backlog are in docs/.
