@@ -25,7 +25,7 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [ ] Velocity-aware brush models, interpolation, shape variation and higher-fidelity pen dynamics.
 - [ ] 50+ scripts, contextual Arabic, Hebrew final forms, bidi and mixed RTL/LTR.
 - [ ] Connected cursive mode and ligatures.
-- [x] Basic LaTeX-like mathematical shorthand normalization and formula palette.
+- [x] Recursive formula AST, missing-glyph traversal and vector layout for fractions, roots, superscripts and subscripts; formula palette and German example presets.
 - [x] Recursive formula AST and vector layout for stacked fractions, square roots with overbars, superscripts and subscripts.
 - [ ] Full equation layout: scalable delimiters, matrices, summation limits, formula-aware line wrapping and editor controls.
 - [ ] Bold/highlight markup and table rendering.
