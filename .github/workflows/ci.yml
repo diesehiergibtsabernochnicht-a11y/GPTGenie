@@ -16,3 +16,11 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - name: Upload Goodnotes smoke-test notebook
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gptgenie-goodnotes-smoke-test
+          path: artifacts/GPTGenie-current-writer-smoke-test.goodnotes
+          if-no-files-found: error
+          retention-days: 7
