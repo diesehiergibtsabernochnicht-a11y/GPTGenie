@@ -41,7 +41,7 @@ Checks:
 - Fast Scan with an explicit queue, missing-only mode, skip, faint template, progress and local resume after reload.
 - Missing-glyph detection now includes symbols outside the selected script and exposes them in the character picker.
 - Included sample character sets: German, English, Russian, Greek, Arabic, Hebrew, Japanese kana and a maths set. This is not yet the full 50+ language coverage of the reference product.
-- Adaptive notebook stock: blank, wide/narrow ruled, squared and dotted paper; paper-line colour, margin guide, independent left/right/top/bottom margins, grid spacing, line slope/wave, margin irregularity and optional rule snapping. Up to 10 presets.
+- Adaptive notebook stock: blank, wide/narrow ruled, squared and dotted paper; paper-line colour, margin guide, independent left/right/top/bottom margins, grid spacing, line slope/wave, margin irregularity, optional rule snapping and one local PNG/JPEG paper image with zoom, rotation and position controls. Up to 10 presets.
 - German-friendly maths palette and LaTeX-like normalization for numeric fractions, roots, powers/subscripts, common operators and Greek letters. Stacked equation layout is not implemented.
 - Vector text composition, actual SVG handwriting preview and multipage preview navigation.
 - Experimental page annotation editor: pen, marker, select/move, whole-stroke erase, copy/paste, delete and undo/redo. Added strokes are saved with documents and included in PDF/Goodnotes exports.
