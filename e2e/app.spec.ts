@@ -83,6 +83,9 @@ test('mobile layout keeps the writing workflow inside a phone viewport', async (
   await expect(editor).toBeVisible();
   await editor.fill('x^2 + \\frac{1}{2}');
   await expect(page.locator('.preview-panel')).toBeVisible();
-  const documentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
-  expect(documentWidth).toBeLessThanOrEqual(390);
+  for (const width of [320, 390, 768]) {
+    await page.setViewportSize({ width, height: 844 });
+    const documentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
+    expect(documentWidth, 'no horizontal overflow at ' + width + 'px').toBeLessThanOrEqual(width);
+  }
 });
