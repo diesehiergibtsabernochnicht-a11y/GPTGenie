@@ -13,8 +13,8 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [x] SHA-256 integrity checks, versioned schema validation and atomic workspace restore, including unsaved draft and Fast Scan checkpoint.
 - [ ] Schema migration tests and recovery from storage quota failures.
 - [x] Unit tests for formula AST, missing glyphs, baseline alignment, atomic IndexedDB writes and Goodnotes archive structure.
-- [x] Playwright smoke tests for formula editing, missing-glyph prompts, Goodnotes download/archive shape and draft persistence across reload on root and Pages paths.
-- [ ] Expand tests for IndexedDB migrations, restore failures, Fast Scan workflows, layout edge cases and visual comparisons.
+- [x] Playwright smoke tests for formula editing, missing-glyph prompts, Goodnotes download/archive shape, SHA-256 backup export/restore, draft persistence and offline reload on root and Pages paths.
+- [ ] Expand tests for IndexedDB migrations, quota/interrupted restore failures, Fast Scan workflows, layout edge cases and visual comparisons.
 
 ## P1 — handwriting capture and composition
 - [x] Seven initial script sets plus a maths symbol set; German grid is constrained to 114 entries.
@@ -54,7 +54,8 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [ ] Samsung Notes, OneNote, Notability, Freenotes and Noteful writers, each independently validated.
 - [x] PDF export and local-first PWA shell.
 - [x] Project-subpath-aware Vite base, manifest and service-worker registration; scoped offline cache and navigation-only app-shell fallback.
-- [ ] Offline runtime QA, local fonts, performance mode and accessibility.
+- [x] Offline app-shell reload after one successful online load on root and Pages paths.
+- [ ] First-install offline, update lifecycle, local fonts, performance mode and accessibility.
 - [ ] Mobile/tablet QA and matched-viewport screenshot comparisons.
 - [ ] GitHub Pages deployment after parity and release checks.
 
