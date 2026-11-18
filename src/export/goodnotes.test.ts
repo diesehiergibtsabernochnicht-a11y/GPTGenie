@@ -85,6 +85,7 @@ describe('Goodnotes archive writer', () => {
   it('exports formula layout as individual native Goodnotes ink objects', async () => {
     const formulaGlyphs = ['1', '2', '+', 'x'].map(char => ({ ...glyph, id: 'formula-' + char, char }));
     const blob = await makeGoodnotes('\\frac{1}{2} + x^2', 'Formula notebook', settings, formulaGlyphs);
+    if (process.env.GITHUB_ACTIONS === 'true') { mkdirSync('artifacts', { recursive: true }); writeFileSync('artifacts/GPTGenie-formula-layout-smoke-test.goodnotes', Buffer.from(await blob.arrayBuffer())); }
     const archive = unzipSync(new Uint8Array(await blob.arrayBuffer()));
     const pagePath = Object.keys(archive).find(name => name.startsWith('notes/'))!;
     const pageRecords = delimited(archive[pagePath]);
