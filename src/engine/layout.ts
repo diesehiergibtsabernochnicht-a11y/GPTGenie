@@ -1,6 +1,6 @@
 import type{Glyph,InkStroke,StrokePoint}from'../storage';
 import{normalizeMath}from'./math';
-export type LayoutSettings={paper:'A4'|'A5'|'Letter';fontSize:number;lineSpacing:number;margin:number;letterSpacing:number;wordSpacing:number;variation:number;ink:string;style?:'plain'|'lined'|'grid'|'dotted'|'ruled-wide'|'ruled-narrow'|'squared-wide'|'squared-narrow'|'dotted-wide'|'dotted-narrow';ruleSpacing?:number;marginLeft?:number;marginRight?:number;marginTop?:number;marginBottom?:number;lineSlope?:number;lineWave?:number;marginIrregularity?:number;snapToRules?:boolean};
+export type LayoutSettings={paper:'A4'|'A5'|'Letter';fontSize:number;lineSpacing:number;margin:number;letterSpacing:number;wordSpacing:number;variation:number;ink:string;style?:'plain'|'lined'|'grid'|'dotted'|'ruled-wide'|'ruled-narrow'|'squared-wide'|'squared-narrow'|'dotted-wide'|'dotted-narrow';ruleSpacing?:number;marginLeft?:number;marginRight?:number;marginTop?:number;marginBottom?:number;lineSlope?:number;lineWave?:number;marginIrregularity?:number;snapToRules?:boolean;backgroundImage?:string;backgroundImageScale?:number;backgroundImageRotation?:number;backgroundImageX?:number;backgroundImageY?:number};
 export type PlacedStroke={points:StrokePoint[];color:string;width:number;opacity:number;tool:InkStroke['tool']};
 export type PlacedFallback={text:string;x:number;y:number;size:number;color:string};
 export type LayoutPage={width:number;height:number;strokes:PlacedStroke[];fallback:PlacedFallback[]};
