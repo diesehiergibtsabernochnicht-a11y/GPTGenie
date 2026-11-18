@@ -75,7 +75,7 @@ export async function exportWorkspace():Promise<Workspace>{
 export async function importWorkspace(input:unknown):Promise<void>{
  if(!isRecord(input)||input.schema!=='gptgenie-workspace'||![1,2,3].includes(Number(input.version)))throw new Error('This is not a supported GPTGenie backup.');
  const presets=input.presets??[],scan=input.fastScan??null;
- if(scan!==null&&(!isRecord(scan)||!Array.isArray(scan.queue)||!scan.queue.every(x=>typeof x==='string')||!Number.isInteger(scan.index)||!isFiniteNumber(scan.index)||typeof scan.script!=='string'))throw new Error('The backup contains an invalid Fast Scan checkpoint.');
+ if(scan!==null&&(!isRecord(scan)||!Array.isArray(scan.queue)||scan.queue.length===0||!scan.queue.every(x=>typeof x==='string')||!Number.isInteger(scan.index)||!isFiniteNumber(scan.index)||scan.index<0||scan.index>=scan.queue.length||typeof scan.script!=='string'))throw new Error('The backup contains an invalid Fast Scan checkpoint.');
  if(!Array.isArray(input.glyphs)||!input.glyphs.every(validateGlyph)||!Array.isArray(input.documents)||!input.documents.every(validateDoc)||!Array.isArray(presets)||!presets.every(validatePreset)||!isRecord(input.settings??{}))throw new Error('The backup contains invalid or incomplete workspace data.');
  if(input.version===3){
   if(!isRecord(input.integrity)||input.integrity.algorithm!=='SHA-256'||typeof input.integrity.digest!=='string')throw new Error('The backup is missing its integrity checksum.');
