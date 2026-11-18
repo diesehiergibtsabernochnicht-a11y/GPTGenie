@@ -8,9 +8,10 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [ ] Complete typed scene graph for pages, strokes, glyphs, text, photos, backgrounds, highlights and annotations.
 - [x] Deterministic text-to-glyph layout in physical page units, with multipage composition.
 - [x] PDF exporter renders composed vector strokes and page backgrounds.
-- [ ] Replace the text-only preview with the exact shared page scene graph used by exporters.
+- [x] Live SVG preview uses the same composition engine as PDF and Goodnotes.
 - [ ] Backup integrity hashes, schema migration tests and recovery from partial restore failures.
-- [ ] Add unit/integration tests for layout, PDF, persistence and export package structure.
+- [x] Unit tests for math normalization, missing glyphs, baseline alignment and Goodnotes archive structure.
+- [ ] Expand tests for IndexedDB migrations, restore failures, layout edge cases and browser runtime.
 
 ## P1 — handwriting capture and composition
 - [x] Seven initial script sets plus a maths symbol set; German grid is constrained to 114 entries.
@@ -33,11 +34,12 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [ ] Pen/highlighter/eraser with partial-stroke geometry.
 - [ ] Handwritten text insertion, photos, page backgrounds and page insertion/reorder/delete.
 - [ ] Undo/redo, clipboard, shortcuts, stylus-only mode and touch gestures.
-- [ ] Shared page scene graph for preview, PDF and native exporters.
+- [ ] Extend the shared scene graph to editor objects and annotations.
 
 ## P3 — export and release
-- [ ] Implement a clean repeatable Goodnotes writer from the experimentally confirmed package structure. The imported test candidate was fixture-derived and is not an in-app exporter.
-- [ ] Verify independent stroke selection, move, recolour and erasure; background separation; multipage; images; highlights; and Goodnotes round-trip.
+- [x] Experimental repeatable Goodnotes ZIP/protobuf/TPL writer with fresh IDs, separate PDF background attachment and per-page event/index records.
+- [ ] Import the current app-generated file into Goodnotes; verify independent stroke selection, move, recolour and erasure; background separation; multipage; and round-trip.
+- [ ] Improve Goodnotes pressure and brush-specific TPL schemas; add photos, text boxes, highlighters and editor object support.
 - [ ] Samsung Notes, OneNote, Notability, Freenotes and Noteful writers, each independently validated.
 - [x] PDF export and local-first PWA shell.
 - [ ] Offline cache hardening, project-subpath service worker, local fonts, performance mode and accessibility.
@@ -46,4 +48,4 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 
 ## Current status
 
-This repository is a working prototype and architecture foundation, not a complete GPTGenie recreation. The original product exposes a full PDF editor, richer settings, more than 50 scripts, several native exporters and polished responsive/stylus workflows. Those are not yet present here. A synthetic one-page Goodnotes archive imported without an error, but the experiment reused structural identifiers and an attachment from the supplied fixture; no clean reusable writer is in the app.
+This repository is a working prototype and architecture foundation, not a complete GPTGenie recreation. The original product exposes a full PDF editor, richer settings, more than 50 scripts, several native exporters and polished responsive/stylus workflows. Those are not yet present here. The current Goodnotes writer is structurally tested in CI but has not yet been imported into Goodnotes from the app; the earlier user-confirmed import was for a fixture-derived test candidate.
