@@ -83,11 +83,6 @@ test('mobile layout keeps the writing workflow inside a phone viewport', async (
   await expect(editor).toBeVisible();
   await editor.fill('x^2 + \\frac{1}{2}');
   await expect(page.locator('.preview-panel')).toBeVisible();
-  const diagnostics = await page.evaluate(() => Array.from(document.querySelectorAll('body *')).map(element => {
-    const rect = element.getBoundingClientRect();
-    return { tag: element.tagName, className: typeof element.className === 'string' ? element.className : '', text: (element.textContent || '').trim().slice(0, 35), left: Math.round(rect.left), right: Math.round(rect.right), width: Math.round(rect.width), scrollWidth: element.scrollWidth, clientWidth: element.clientWidth };
-  }).filter(item => item.right > window.innerWidth + 1).slice(0, 20));
-  console.log('MOBILE_OVERFLOW', JSON.stringify(diagnostics));
   const documentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
   expect(documentWidth).toBeLessThanOrEqual(390);
 });
