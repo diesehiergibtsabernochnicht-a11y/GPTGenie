@@ -60,6 +60,10 @@ describe('Goodnotes archive writer', () => {
     expect(names).toContain('index.events.pb');
     expect(names).toContain('index.attachments.pb');
     expect(names).toContain('schema.pb');
+    expect(archive['thumbnail.jpg'][0]).toBe(0xff);
+    expect(archive['thumbnail.jpg'][1]).toBe(0xd8);
+    expect(archive['thumbnail.jpg'][archive['thumbnail.jpg'].length-2]).toBe(0xff);
+    expect(archive['thumbnail.jpg'][archive['thumbnail.jpg'].length-1]).toBe(0xd9);
     const pagePath = names.find(n => n.startsWith('notes/'))!;
     const pageRecords = delimited(archive[pagePath]);
     expect(pageRecords).toHaveLength(4);
