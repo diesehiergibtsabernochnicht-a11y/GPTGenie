@@ -37,6 +37,7 @@ jobs:
       - name: Install Chromium for browser tests
         run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - run: npm run test:e2e:pages
       - name: Upload GitHub Pages build for browser QA
         uses: actions/upload-artifact@v4
         with:
