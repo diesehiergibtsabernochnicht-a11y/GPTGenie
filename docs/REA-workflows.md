@@ -30,7 +30,7 @@ Classification: **Observed** means described or exposed by first-party GPTGenie 
 
 Target UI exposes: Select, Area/Lasso, Text, Pen, Marker, Eraser and Photo. Selection supports move, resize, duplicate, cut, copy, paste and delete; inspector exposes colour and position/size. Page controls include add page, page background, zoom and page navigation. Keyboard shortcuts include V/L/T/B/H/E, undo/redo, clipboard, duplicate, delete, page up/down, zoom and pan.
 
-These are **observed target affordances**, but gesture details, hit testing, z-order, selection rules, undo transactions, error states and persistence transitions are **unknown** until exercised in the live app. The rebuild currently has no generated-page editor.
+These are **observed target affordances**, but gesture details, hit testing, z-order, selection rules, undo transactions, error states and persistence transitions are **unknown** until exercised in the live app. The rebuild currently has a first annotation layer: users can draw pen/marker strokes, select/move added strokes, erase whole added strokes, copy/paste, delete and undo/redo. Those edits persist with documents and are included in PDF/Goodnotes export. Lasso, generated-glyph selection, partial erasure, text/photo insertion and page operations remain absent.
 
 ## D. Export and local data
 
