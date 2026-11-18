@@ -13,12 +13,12 @@ describe('normalizeMath', () => {
   });
   it('parses editable stacked fractions and square roots', async () => {
     const { parseMath } = await import('./math');
-    expect(parseMath('\\\\frac{a+b}{c}')).toEqual([{
+    expect(parseMath('\\frac{a+b}{c}')).toEqual([{
       type: 'fraction',
       numerator: [{ type: 'glyph', value: 'a' }, { type: 'glyph', value: '+' }, { type: 'glyph', value: 'b' }],
       denominator: [{ type: 'glyph', value: 'c' }],
     }]);
-    expect(parseMath('\\\\sqrt{x+1}')).toEqual([{
+    expect(parseMath('\\sqrt{x+1}')).toEqual([{
       type: 'root',
       body: [{ type: 'glyph', value: 'x' }, { type: 'glyph', value: '+' }, { type: 'glyph', value: '1' }],
     }]);
