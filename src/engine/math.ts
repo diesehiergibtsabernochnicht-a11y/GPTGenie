@@ -19,4 +19,87 @@ export function normalizeMath(input:string):string{
  s=s.replace(/\\left|\\right/g,"").replace(/[{}]/g,"");
  return s;
 }
+
+export type FormulaNode =
+  | { type: 'glyph'; value: string }
+  | { type: 'fraction'; numerator: FormulaNode[]; denominator: FormulaNode[] }
+  | { type: 'root'; body: FormulaNode[] }
+  | { type: 'script'; base: FormulaNode; superscript?: FormulaNode[]; subscript?: FormulaNode[] };
+
+const FORMULA_COMMANDS: Record<string, string> = {
+  cdot:'·', times:'×', div:'÷', pm:'±', mp:'∓', le:'≤', leq:'≤', ge:'≥', geq:'≥',
+  neq:'≠', approx:'≈', equiv:'≡', pi:'π', alpha:'α', beta:'β', gamma:'γ', Delta:'Δ',
+  theta:'θ', lambda:'λ', mu:'μ', sigma:'σ', omega:'ω', infty:'∞', sum:'∑', int:'∫',
+  rightarrow:'→', leftarrow:'←', Rightarrow:'⇒', percent:'%', circ:'°', therefore:'∴', angle:'∠',
+};
+
+export function parseMath(input: string): FormulaNode[] {
+  const source = input.replace(/\\\\/g, '\n');
+  let index = 0;
+  const readGroup = (): FormulaNode[] => {
+    if (source[index] !== '{') return readAtom();
+    index++;
+    const nodes = readSequence(true);
+    if (source[index] === '}') index++;
+    return nodes;
+  };
+  const readAtom = (): FormulaNode[] => {
+    if (source[index] === '{') return readGroup();
+    if (source[index] === '\\') {
+      index++;
+      const start = index;
+      while (/[A-Za-z]/.test(source[index] ?? '')) index++;
+      const command = source.slice(start, index);
+      if (command === 'frac') return [{ type: 'fraction', numerator: readGroup(), denominator: readGroup() }];
+      if (command === 'sqrt') return [{ type: 'root', body: readGroup() }];
+      if (command === 'left' || command === 'right') return readAtom();
+      const mapped = FORMULA_COMMANDS[command];
+      return [...(mapped ?? command).split('')].map(value => ({ type: 'glyph', value }));
+    }
+    if (source.startsWith('sqrt(', index)) {
+      index += 5;
+      const start = index;
+      let depth = 1;
+      while (index < source.length && depth > 0) {
+        if (source[index] === '(') depth++;
+        else if (source[index] === ')') depth--;
+        if (depth > 0) index++;
+      }
+      const body = source.slice(start, index);
+      if (source[index] === ')') index++;
+      return [{ type: 'root', body: parseMath(body) }];
+    }
+    const value = [...source.slice(index)][0] ?? '';
+    if (value) index += value.length;
+    return value ? [{ type: 'glyph', value }] : [];
+  };
+  const readSequence = (group = false): FormulaNode[] => {
+    const nodes: FormulaNode[] = [];
+    while (index < source.length && (!group || source[index] !== '}')) {
+      const ch = source[index];
+      if (ch === '^' || ch === '_') {
+        index++;
+        const argument = source[index] === '{' ? readGroup() : readAtom();
+        const base = nodes.pop();
+        if (!base) { nodes.push({ type: 'glyph', value: ch }, ...argument); continue; }
+        const existing = base.type === 'script' ? base : { type: 'script' as const, base };
+        if (ch === '^') existing.superscript = argument;
+        else existing.subscript = argument;
+        nodes.push(existing);
+        continue;
+      }
+      if (ch === '/' && nodes.length && nodes[nodes.length - 1].type === 'glyph' && index + 1 < source.length && source[index + 1] !== ' ') {
+        const numerator = [nodes.pop()!];
+        index++;
+        const denominator = readAtom();
+        nodes.push({ type: 'fraction', numerator, denominator });
+        continue;
+      }
+      nodes.push(...readAtom());
+    }
+    return nodes;
+  };
+  return readSequence();
+}
+
 export const MATH_INSERTS=[["x²","x^2"],["x₁","x_1"],["√","\\sqrt{x}"],["a⁄b","\\frac{a}{b}"],["·","\\cdot"],["π","\\pi"],["≤","\\le"],["≥","\\ge"],["≠","\\neq"],["∑","\\sum"],["∞","\\infty"],["→","\\rightarrow"],["Pythagoras","a^2+b^2=c^2"],["Kreisfläche","A=\\pi r^2"],["Geschwindigkeit","v=\\frac{s}{t}"],["Kraft","F=m\\cdot a"],["Prozent","W=G\\cdot\\frac{p}{100}"]] as const;
