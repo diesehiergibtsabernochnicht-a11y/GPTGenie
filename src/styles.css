@@ -59,3 +59,7 @@
 .preview-empty{z-index:4}
 .settings-grid input[type=file]{max-width:100%;font-size:9px;color:#7d8798}
 .dark .settings-grid input[type=file]{color:#c1cbdc}
+
+.save-state.saving .dot{background:#d69a35;box-shadow:0 0 0 3px rgba(214,154,53,.14)}
+.save-state.error{color:#b42318}
+.save-state.error .dot{background:#d92d20;box-shadow:0 0 0 3px rgba(217,45,32,.14)}
