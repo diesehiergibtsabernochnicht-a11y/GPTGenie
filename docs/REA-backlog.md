@@ -1,42 +1,49 @@
 # GPTGenie rebuild backlog
 
+Priorities reflect dependency and correctness, not a promise that the entire reference product is already reproduced.
+
 ## P0 — architecture and correctness
 - [x] Store editable vector glyph strokes with x/y, pressure, time and tilt; retain PNG preview as a thumbnail.
-- [ ] IndexedDB schema migrations, transactional autosave and quota handling.
-- [ ] Complete typed scene graph for pages, strokes, glyphs, text, photos, backgrounds and annotations.
+- [ ] IndexedDB schema migrations, transactional autosave, quota handling and storage error recovery.
+- [ ] Complete typed scene graph for pages, strokes, glyphs, text, photos, backgrounds, highlights and annotations.
 - [x] Deterministic text-to-glyph layout in physical page units, with multipage composition.
 - [x] PDF exporter renders composed vector strokes and page backgrounds.
-- [x] Minimal independent Goodnotes package writer validated for import into Goodnotes with a synthetic ruled page and one vector stroke.\n- [ ] Rich native export: composed glyphs, selectable/erasable objects, all paper backgrounds and multipage documents.
-- [x] Portable JSON workspace backup/restore includes glyph samples, documents, presets and settings.
-- [ ] Add backup integrity checks, migration tests and recovery from partial restore failures.
+- [ ] Replace the text-only preview with the exact shared page scene graph used by exporters.
+- [ ] Backup integrity hashes, schema migration tests and recovery from partial restore failures.
+- [ ] Add unit/integration tests for layout, PDF, persistence and export package structure.
 
 ## P1 — handwriting capture and composition
-- [x] Seven-script registry and 114-character German scan set.
-- [x] Fast Scan, missing-character queue, edit/select saved glyphs and multiple variants.
-- [ ] Template overlay and richer per-character management.
-- [x] Five pen tool choices and pressure/tilt capture; basic seeded per-use glyph variation.
-- [ ] Velocity-aware brush models, interpolation and higher-fidelity pen dynamics.
+- [x] Seven initial script sets plus a maths symbol set; German grid is constrained to 114 entries.
+- [x] Fast Scan queue now has an explicit sequence; missing-only scan includes unsaved script characters and missing text glyphs.
+- [x] New glyph samples record a baseline metric; the composer uses it to align new samples.
+- [ ] Template overlay, adjustable capture canvas, saved-variant list, edit/delete and richer per-character management.
+- [x] Capture pressure/tilt/time and expose five pen choices; actual brush models remain simplified.
+- [ ] Velocity-aware brush models, interpolation, shape variation and higher-fidelity pen dynamics.
 - [ ] 50+ scripts, contextual Arabic, Hebrew final forms, bidi and mixed RTL/LTR.
 - [ ] Connected cursive mode and ligatures.
-- [x] Basic LaTeX-like mathematical shorthand normalization, formula insertion palette and dedicated math-symbol handwriting set.\n- [ ] Proper stacked fractions, scalable roots, equation layout and formula-aware glyph metrics.\n- [ ] Bold/highlight markup.
+- [x] Basic LaTeX-like mathematical shorthand normalization and formula palette.
+- [ ] Proper stacked fractions, scalable roots, equation layout, formula-aware glyph metrics and native math glyph workflows.
+- [ ] Bold/highlight markup and table rendering.
 - [x] Basic spacing, baseline jitter, margins and line spacing.
-- [ ] Advanced line slope/wave, natural margins, rule snapping and per-glyph metrics.
+- [ ] Advanced line slope/wave, rule snapping, four independent margins and natural left-margin irregularity.
 
 ## P2 — page editor
 - [ ] Multipage editor, page overview, active-page viewport, zoom and pan.
-- [ ] Selection/lasso and object inspector.
+- [ ] Selection/lasso, multi-select and object inspector.
 - [ ] Pen/highlighter/eraser with partial-stroke geometry.
-- [ ] Handwritten text insertion, photos, page backgrounds and page insertion.
+- [ ] Handwritten text insertion, photos, page backgrounds and page insertion/reorder/delete.
 - [ ] Undo/redo, clipboard, shortcuts, stylus-only mode and touch gestures.
-- [ ] Shared scene graph for PDF and native export.
+- [ ] Shared page scene graph for preview, PDF and native exporters.
 
-## P3 — export and polish
+## P3 — export and release
+- [ ] Implement a clean repeatable Goodnotes writer from the experimentally confirmed package structure. The imported test candidate was fixture-derived and is not an in-app exporter.
+- [ ] Verify independent stroke selection, move, recolour and erasure; background separation; multipage; images; highlights; and Goodnotes round-trip.
+- [ ] Samsung Notes, OneNote, Notability, Freenotes and Noteful writers, each independently validated.
 - [x] PDF export and local-first PWA shell.
-- [x] Minimal Goodnotes native package writer: first synthetic candidate imported successfully.\n- [ ] Complete Goodnotes exporter using the shared scene graph; test glyph-level editing, backgrounds, multi-page, photos and annotations.
-- [ ] Samsung Notes, OneNote, Notability, Freenotes and Noteful, each independently validated.
-- [ ] Offline cache hardening, local fonts, performance mode and accessibility.
+- [ ] Offline cache hardening, project-subpath service worker, local fonts, performance mode and accessibility.
 - [ ] Mobile/tablet QA and matched-viewport screenshot comparisons.
+- [ ] GitHub Pages deployment after parity and release checks.
 
 ## Current status
 
-The repository now has vector handwriting capture, a basic text composition engine, multipage PDF generation, IndexedDB persistence, JSON workspace backup/restore and a PWA shell. It remains a prototype rather than a complete recreation. The two real Goodnotes samples establish that GPTGenie's generated strokes are accepted and mostly survive a Goodnotes round trip. A minimal independent synthetic writer has also passed an import-without-error test; rich pages and editing operations are still unverified. The full page editor, broad multilingual catalogue, advanced text formatting, secondary notebook exporters and live runtime QA remain open.
+This repository is a working prototype and architecture foundation, not a complete GPTGenie recreation. The original product exposes a full PDF editor, richer settings, more than 50 scripts, several native exporters and polished responsive/stylus workflows. Those are not yet present here. A synthetic one-page Goodnotes archive imported without an error, but the experiment reused structural identifiers and an attachment from the supplied fixture; no clean reusable writer is in the app.
