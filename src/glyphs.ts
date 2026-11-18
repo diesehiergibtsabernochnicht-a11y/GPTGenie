@@ -5,5 +5,5 @@ export function chooseGlyph<T extends {id:string}>(variants:T[],seed:number){if(
 
 export function buildFastScanQueue(chars:string[],glyphs:{char:string}[],missing:string[],missingOnly:boolean):string[]{
  const candidates=missingOnly?[...new Set([...chars.filter(c=>!glyphs.some(g=>g.char===c)),...missing])]:chars;
- return candidates.filter(c=>! /^\s$/u.test(c));
+ return candidates.filter(c=>c.trim().length>0);
 }
