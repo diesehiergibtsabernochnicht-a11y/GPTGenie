@@ -7,14 +7,14 @@ Last reviewed: 2026-11-18. Results are separated by functional, visual and opera
 | Public product scope | First-party app index, FAQ, guide, changelog | Repository and feature inventory inspected | pass (evidence review only) | No private source recovered |
 | Character drawing | First-party guide/news | Pointer-event canvas and vector point model inspected | unknown | Browser and tablet/stylus interaction not exercised |
 | Baseline alignment | Target guide and troubleshooting docs | New samples record a 70% baseline; layout uses it; legacy samples bottom-align | unknown | Need visual sample with ascenders/descenders and real text |
-| Fast Scan | First-party app index/FAQ | Queue stores explicit sequence; missing-only queue includes text symbols | unknown | Browser test needed for empty queue, skip, reload/resume and final character |
+| Fast Scan | First-party app index/FAQ | Queue builder unit-tested; skip, faint guide, progress and IndexedDB resume implemented | partial | Browser test needed for reload/resume, skip and final-character transitions |
 | Unsupported/missing glyphs | Target guide says missing glyphs are listed and can remain blank | Rebuild reports all unsaved text glyphs, offers them in picker; PDF no longer inserts '?' | pass (unit-level logic only) | Browser test custom Unicode, RTL and actual drawing |
 | German 114 characters | Target app index and guide | Rebuild slices its own German character array to 114 | pass (count test only) | Verify exact character membership/order against live grid |
-| Multiple variants | FAQ/news | Model stores variants; selection currently opens first variant | fail (parity gap) | Add explicit variant list, edit/delete and interpolation |
+| Multiple variants | FAQ/news | Saved-variant list, edit-in-place, save-as-new and delete implemented | partial | Add interpolation and test state persistence/visual consistency |
 | Language support | FAQ/languages docs | Seven initial scripts plus maths set | fail (scope gap) | 50+ languages, contextual Arabic, Hebrew bidi, mixed-direction and Japanese shaping absent |
 | Math formulas | Target changelog says fractions, powers and roots | Inline normalizer and symbol set exist; tests cover numeric fraction, root, powers and Greek operators | partial | Proper stacked fractions, scalable roots, formula metrics and native math glyph workflows |
 | Paper templates | Target guide/news | Blank, ruled, squared and dotted options exist | unknown | Preview and PDF alignment need matched screenshot/PDF comparison |
-| Settings parity | Target app index exposes four margins, slant, snapping, jitter and presets | Partial size/spacing/margin controls | fail (scope gap) | Add full controls, help, units, defaults and up to 10 presets |
+| Settings parity | Target app index exposes four margins, slant, snapping, jitter and presets | Four margins, slope/wave, margin irregularity, snapping and 10-preset cap implemented | partial | Compare exact defaults, units, all ranges and preview behaviour with live target |
 | Live preview | Target app index/guide | SVG preview uses the same composeText scene as PDF/Goodnotes; multipage navigation | pass (code and build test) | Visual comparison and browser interaction still pending |
 | PDF output | Target guide | pdf-lib composes vector strokes and pages | unknown | No local browser PDF opened/compared in this environment |
 | PDF editor | Target app index/guide | No generated-page editor in repo | fail | Implement full object/page editing and undo model |
