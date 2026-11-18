@@ -8,7 +8,7 @@
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
     "typecheck": "tsc --noEmit --pretty",
-    "test": "vitest run",
+    "test": "vitest run src",
     "test:e2e": "playwright test",
     "test:e2e:pages": "playwright test --config=playwright.pages.config.ts"
   },
