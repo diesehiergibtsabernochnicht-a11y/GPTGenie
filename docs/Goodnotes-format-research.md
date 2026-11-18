@@ -19,7 +19,17 @@ The inspected real files confirm that .goodnotes is a ZIP archive. The package c
 - thumbnail.jpg and schema.pb;
 - document.info.pb, present in the Goodnotes re-export sample.
 
-The page stream is a sequence of varint-length-prefixed protobuf records. In the inspected pages, records alternate between object metadata records and field-7 payload records. The payloads contain structured drawing data, including TPL-related data. This is an empirical observation from actual app-generated files, not a complete formal schema.
+The page stream is a sequence of varint-length-prefixed protobuf records. In the inspected pages, object metadata records are paired with body records. The handwriting/stroke body is represented by a protobuf field-7 payload. This agrees with independent reverse-engineering documentation, which describes field 7 as a stroke/shape object and field 2 of that object as its geometry container.
+
+## Stroke geometry encoding
+
+The sample's stroke geometry field begins with Apple's framed LZ4 markers (bv41 or stored-block bv4-, terminated by bv4$). Decompressing the block yields a TPL memory image beginning tpl\0, with an embedded size and format string. One common format observed in these samples is:
+
+    vuA(v)A(S(uu))A(S(uuuu))vA(f)
+
+The format contains typed arrays and structs for path data. The sample's parsed representation includes a visibility/segment-flag array, an initial coordinate pair, and a sequence of four-value path segments. This is a format observation, not a complete semantic specification for every brush or Goodnotes version.
+
+Independent parser research documents the same ZIP → protobuf → Apple framed LZ4 → TPL structure and describes the stroke payload fields and path arrays. That project is a parser/exporter, not a validated .goodnotes authoring library. Do not assume that decoding support implies writing support.
 
 ## Real before/after round-trip evidence
 
@@ -43,17 +53,18 @@ This is strong evidence that the GPTGenie-generated page representation is accep
 2. Compose every character occurrence into independent placed stroke objects.
 3. Build one page scene graph containing background, image attachments, handwriting strokes, highlights and editor annotations.
 4. Implement a separate serializer that writes the ZIP archive, indexes, page records, attachment data and encoded stroke payloads.
-5. Use the inspected GPTGenie page records as a known-good reference for record framing, metadata, and drawing payloads.
-6. Start with a minimal synthetic notebook: one page, white background, one simple ballpoint stroke. Generate it by reusing only the structural patterns proven by the sample; do not guess required fields.
-7. Open that generated file in Goodnotes and verify it is accepted.
-8. Add glyph strokes and confirm each character is independently selectable and erasable.
-9. Add multipage, background PDF, photos, highlighter and other tools incrementally.
-10. Round-trip generated documents through Goodnotes export and compare archive members, record IDs, payloads and page geometry.
-11. Keep the native writer experimental until it passes the real-app acceptance suite.
+5. Implement and test the binary layers independently: protobuf wire encoding, TPL path encoding, Apple framed LZ4 block encoding, and ZIP packaging.
+6. Use the inspected GPTGenie page records as a known-good reference for record framing, metadata, and drawing payloads.
+7. Start with a minimal synthetic notebook: one page, white background, one simple ballpoint stroke. Generate it by reusing only the structural patterns proven by the sample; do not guess required fields.
+8. Open that generated file in Goodnotes and verify it is accepted.
+9. Add glyph strokes and confirm each character is independently selectable and erasable.
+10. Add multipage, background PDF, photos, highlighter and other tools incrementally.
+11. Round-trip generated documents through Goodnotes export and compare archive members, record IDs, payloads and page geometry.
+12. Keep the native writer experimental until it passes the real-app acceptance suite.
 
 ## Critical limitation
 
-We now have strong real-app evidence for the GPTGenie-to-Goodnotes import path, but we do not yet have a validated independent Goodnotes writer. Parser observations and a successful import of the source file do not guarantee that a newly generated archive will be accepted by current Goodnotes versions. No newly generated file should be labelled Goodnotes-compatible until opened and tested in Goodnotes itself.
+We now have strong real-app evidence for the GPTGenie-to-Goodnotes import path, plus a concrete observed stroke encoding. We do not yet have a validated independent Goodnotes writer. Parser observations and a successful import of the source file do not guarantee that a newly generated archive will be accepted by current Goodnotes versions. No newly generated file should be labelled Goodnotes-compatible until opened and tested in Goodnotes itself.
 
 The supplied notebooks were used only for local analysis. Do not commit user notebooks, private document content, page IDs, attachments or extracted content to this public repository.
 
