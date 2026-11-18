@@ -82,6 +82,15 @@ describe('Goodnotes archive writer', () => {
     expect(new TextDecoder().decode(archive[attachmentPath].slice(0, 4))).toBe('%PDF');
   });
 
+  it('exports formula layout as individual native Goodnotes ink objects', async () => {
+    const formulaGlyphs = ['1', '2', '+', 'x'].map(char => ({ ...glyph, id: 'formula-' + char, char }));
+    const blob = await makeGoodnotes('\\frac{1}{2} + x^2', 'Formula notebook', settings, formulaGlyphs);
+    const archive = unzipSync(new Uint8Array(await blob.arrayBuffer()));
+    const pagePath = Object.keys(archive).find(name => name.startsWith('notes/'))!;
+    const pageRecords = delimited(archive[pagePath]);
+    expect(pageRecords).toHaveLength(8);
+  });
+
   it('keeps a custom image as part of the separate Goodnotes paper PDF', async () => {
     const withPhoto = { ...settings, backgroundImage: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFklEQVR4nGN89uEXAwMDEwMDAwMDAwAh1gLU+YtJ5wAAAABJRU5ErkJggg==', backgroundImageScale: 120, backgroundImageRotation: 8, backgroundImageX: 4, backgroundImageY: -3 };
     const blob = await makeGoodnotes('a', 'Goodnotes photo paper', withPhoto, [glyph]);
