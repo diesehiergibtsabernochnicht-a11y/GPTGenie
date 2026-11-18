@@ -47,6 +47,12 @@ test('formula editor autosaves locally and exports a native Goodnotes notebook',
   expect(backup.integrity.algorithm).toBe('SHA-256');
   expect(backup.integrity.digest).toMatch(/^[a-f0-9]{64}$/);
 
+  await editor.fill('temporary unsaved change');
+  await expect(page.locator('.save-state')).toContainText('Saved locally');
+  await page.getByRole('button', { name: /Settings & backup/ }).click();
+  await page.locator('.settings-drawer input[type="file"]').setInputFiles(backupPath!);
+  await expect(editor).toHaveValue(formula);
+
   expect(pageErrors).toEqual([]);
 
   await page.reload();
