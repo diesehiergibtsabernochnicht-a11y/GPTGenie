@@ -16,6 +16,10 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run build
+      - name: Verify GitHub Pages project-subpath build
+        run: npm run build
+        env:
+          GITHUB_PAGES: 'true'
       - name: Upload Goodnotes smoke-test notebook
         if: success()
         uses: actions/upload-artifact@v4
