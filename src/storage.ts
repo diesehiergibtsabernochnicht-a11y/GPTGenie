@@ -63,16 +63,18 @@ async function sha256(value:string):Promise<string>{
 export async function exportWorkspace():Promise<Workspace>{
  const d=await db(),tx=d.transaction(STORE,'readonly'),store=tx.objectStore(STORE);
  const read=<T>(key:string)=>new Promise<T|undefined>((resolve,reject)=>{const request=store.get(key);request.onsuccess=()=>resolve(request.result as T|undefined);request.onerror=()=>reject(request.error)});
+ const completed=done(tx);
  const [settings,glyphs,documents,presets]=await Promise.all([
   read<Record<string,unknown>>('settings'),read<Glyph[]>('glyphs'),read<Doc[]>('documents'),read<Preset[]>('presets')
  ]);
- await done(tx);
+ await completed;
  const body={schema:'gptgenie-workspace' as const,version:3 as const,exportedAt:new Date().toISOString(),settings:settings??{},glyphs:glyphs??[],documents:documents??[],presets:presets??[]};
  return {...body,integrity:{algorithm:'SHA-256',digest:await sha256(JSON.stringify(body))}};
 }
 export async function importWorkspace(input:unknown):Promise<void>{
  if(!isRecord(input)||input.schema!=='gptgenie-workspace'||![1,2,3].includes(Number(input.version)))throw new Error('This is not a supported GPTGenie backup.');
- if(!Array.isArray(input.glyphs)||!input.glyphs.every(validateGlyph)||!Array.isArray(input.documents)||!input.documents.every(validateDoc)||!Array.isArray(input.presets??[])||!(input.presets??[] as unknown[]).every(validatePreset)||!isRecord(input.settings??{}))throw new Error('The backup contains invalid or incomplete workspace data.');
+ const presets=input.presets??[];
+ if(!Array.isArray(input.glyphs)||!input.glyphs.every(validateGlyph)||!Array.isArray(input.documents)||!input.documents.every(validateDoc)||!Array.isArray(presets)||!presets.every(validatePreset)||!isRecord(input.settings??{}))throw new Error('The backup contains invalid or incomplete workspace data.');
  if(input.version===3){
   if(!isRecord(input.integrity)||input.integrity.algorithm!=='SHA-256'||typeof input.integrity.digest!=='string')throw new Error('The backup is missing its integrity checksum.');
   const {integrity,...body}=input;
