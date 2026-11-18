@@ -38,4 +38,19 @@ test('formula editor autosaves locally and exports a native Goodnotes notebook',
   await page.reload();
   await page.getByRole('button', { name: /Create notes/ }).click();
   await expect(page.locator('textarea.writing-area')).toHaveValue(formula);
+
+  const manifestHref = await page.locator('link[rel="manifest"]').getAttribute('href');
+  expect(manifestHref).toBeTruthy();
+  const manifestResponse = await page.request.get(new URL(manifestHref!, page.url()).toString());
+  expect(manifestResponse.ok()).toBe(true);
+  const manifest = await manifestResponse.json();
+  expect(new URL(manifest.start_url, new URL(manifestHref!, page.url())).pathname).toContain('/');
+
+  await page.evaluate(async () => { await navigator.serviceWorker.ready; });
+  await page.reload();
+  await page.context().setOffline(true);
+  await page.reload();
+  await page.getByRole('button', { name: /Create notes/ }).click();
+  await expect(page.locator('textarea.writing-area')).toHaveValue(formula);
+  await page.context().setOffline(false);
 });
