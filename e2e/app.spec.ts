@@ -33,6 +33,20 @@ test('formula editor autosaves locally and exports a native Goodnotes notebook',
   expect(archive['index.events.pb']).toBeTruthy();
   expect(Object.keys(archive).some(name => name.startsWith('notes/'))).toBe(true);
   expect(Object.keys(archive).some(name => name.startsWith('attachments/'))).toBe(true);
+
+  const [backupDownload] = await Promise.all([
+    page.waitForEvent('download'),
+    page.getByRole('button', { name: 'Backup', exact: true }).click(),
+  ]);
+  const backupPath = await backupDownload.path();
+  expect(backupPath).toBeTruthy();
+  const backup = JSON.parse(await readFile(backupPath!, 'utf8'));
+  expect(backup.schema).toBe('gptgenie-workspace');
+  expect(backup.version).toBe(3);
+  expect(backup.draft.text).toBe(formula);
+  expect(backup.integrity.algorithm).toBe('SHA-256');
+  expect(backup.integrity.digest).toMatch(/^[a-f0-9]{64}$/);
+
   expect(pageErrors).toEqual([]);
 
   await page.reload();
