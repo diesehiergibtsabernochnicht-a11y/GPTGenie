@@ -1,6 +1,6 @@
 export type StrokePoint={x:number;y:number;pressure:number;time:number;tiltX:number;tiltY:number};
 export type InkStroke={id:string;tool:'pen'|'marker'|'pencil'|'fountain'|'brush';color:string;width:number;opacity:number;points:StrokePoint[]};
-export type Glyph={id:string;char:string;dataUrl:string;strokes:InkStroke[];createdAt:number};
+export type Glyph={id:string;char:string;dataUrl:string;strokes:InkStroke[];baselineY?:number;createdAt:number};
 export type Doc={id:string;title:string;text:string;updatedAt:number;settings?:Record<string,unknown>};
 export type Workspace={schema:'gptgenie-workspace';version:2;exportedAt:string;settings:Record<string,unknown>;glyphs:Glyph[];documents:Doc[];presets:Preset[]};
 export type Preset={id:string;name:string;settings:Record<string,unknown>};
