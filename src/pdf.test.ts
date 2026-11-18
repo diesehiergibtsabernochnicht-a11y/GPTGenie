@@ -24,4 +24,11 @@ describe('PDF scene export', () => {
     expect(pdf.getPageCount()).toBe(1);
     expect(pdf.getPage(0).getWidth()).toBeCloseTo(595.28, 1);
   });
+  it('embeds a custom PNG paper background', async () => {
+    const withPhoto = { ...settings, backgroundImage: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFklEQVR4nGN89uEXAwMDEwMDAwMDAwAh1gLU+YtJ5wAAAABJRU5ErkJggg==', backgroundImageScale: 120, backgroundImageRotation: 8, backgroundImageX: 4, backgroundImageY: -3 };
+    const blob = await makePdf('note', 'Photo paper test', withPhoto, [], []);
+    const pdf = await PDFDocument.load(await blob.arrayBuffer());
+    expect(pdf.getPageCount()).toBe(1);
+  });
+
 });
