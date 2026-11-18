@@ -14,8 +14,8 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [ ] Schema migration tests and recovery from storage quota failures.
 - [x] Unit tests for formula AST, missing glyphs, baseline alignment, atomic IndexedDB writes and Goodnotes archive structure.
 - [x] Playwright smoke tests for formula editing, missing-glyph prompts, Goodnotes download/archive shape, SHA-256 backup export/restore, draft persistence and offline reload on root and Pages paths.
-- [x] 390px mobile viewport check on both hosting paths; fixed a 55px horizontal overflow.
-- [ ] Expand tests for IndexedDB migrations, quota/interrupted restore failures, Fast Scan workflows, 320px/tablet/landscape layout, touch/stylus and visual comparisons.
+- [x] 320px/390px phone and 768px tablet viewport checks on both hosting paths; fixed a 55px horizontal overflow.
+- [ ] Expand tests for IndexedDB migrations, quota/interrupted restore failures, Fast Scan workflows, landscape/1024px layout, touch/stylus and visual comparisons.
 
 ## P1 — handwriting capture and composition
 - [x] Seven initial script sets plus a maths symbol set; German grid is constrained to 114 entries.
