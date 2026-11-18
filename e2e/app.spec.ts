@@ -1,0 +1,41 @@
+import { expect, test } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
+import { unzipSync } from 'fflate';
+
+test('formula editor autosaves locally and exports a native Goodnotes notebook', async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on('pageerror', error => pageErrors.push(error.message));
+
+  await page.goto('/');
+  await page.getByRole('button', { name: /Create notes/ }).click();
+
+  const editor = page.locator('textarea.writing-area');
+  await expect(editor).toBeVisible();
+  const formula = '\\frac{a}{b} + x^2';
+  await editor.fill(formula);
+  await expect(page.locator('.save-state')).toContainText('Saved locally');
+
+  const missing = await page.locator('.missing-panel').innerText();
+  expect(missing).toContain('a');
+  expect(missing).toContain('b');
+  expect(missing).not.toContain('⁄');
+
+  const [download] = await Promise.all([
+    page.waitForEvent('download'),
+    page.getByRole('button', { name: /Goodnotes/ }).click(),
+  ]);
+  expect(download.suggestedFilename()).toMatch(/\.goodnotes$/);
+  const downloadPath = await download.path();
+  expect(downloadPath).toBeTruthy();
+  const bytes = await readFile(downloadPath!);
+  expect(bytes.subarray(0, 2)).toEqual(Buffer.from([0x50, 0x4b]));
+  const archive = unzipSync(bytes);
+  expect(archive['index.events.pb']).toBeTruthy();
+  expect(Object.keys(archive).some(name => name.startsWith('notes/'))).toBe(true);
+  expect(Object.keys(archive).some(name => name.startsWith('attachments/'))).toBe(true);
+  expect(pageErrors).toEqual([]);
+
+  await page.reload();
+  await page.getByRole('button', { name: /Create notes/ }).click();
+  await expect(page.locator('textarea.writing-area')).toHaveValue(formula);
+});
