@@ -35,7 +35,7 @@ Build with `npm run build`; check types with `npm run typecheck`.
 - Character variants and character grid.
 - Fast Scan flow and missing-character report for included script sets.
 - Included sample character sets: German, English, Russian, Greek, Arabic, Hebrew and Japanese kana. This is not yet the full 50+ language coverage of the reference product.
-- Settings for page size, paper style, ink colour, size, line spacing, margins, letter/word spacing and variation.
+- Adaptive notebook stock: blank, wide/narrow ruled, squared and dotted paper; paper-line colour, margin guide and grid/rule spacing controls. Handwriting size and baseline spacing adapt to the selected stock.\n- German-friendly maths palette and LaTeX-like normalization for fractions, roots, powers/subscripts, common operators and Greek letters; dedicated math-symbol glyph set and German school-formula starters.
 - Shared vector text composition and multipage PDF export.
 - IndexedDB persistence and JSON workspace backup/restore.
 - PWA manifest and same-origin service-worker cache.
@@ -43,11 +43,11 @@ Build with `npm run build`; check types with `npm run typecheck`.
 ## Not yet implemented / not yet verified
 
 - Full 50+ script catalogue, Arabic shaping, Hebrew bidi/mixed direction, contextual glyph forms and Japanese typesetting.
-- Connected cursive, mathematical shorthand and rich inline formatting.
+- Proper stacked fractions, scalable equation layout, connected cursive and rich inline formatting.
 - Full multi-page PDF editor with lasso, transform, clipboard, partial eraser, image insertion and undo history.
-- Native Goodnotes writer. The format is proprietary and the public reverse-engineering sources found so far are parsers, not validated writers. We have documented the technical path and acceptance tests in docs/Goodnotes-format-research.md.
+- Complete native Goodnotes export is not yet integrated into the app. A minimal independently generated .goodnotes candidate (one ruled page and one vector stroke) has been imported by the user without errors; multi-stroke glyphs, selectable/erasable handwriting, paper variations and multipage documents still need validation. The next step is connecting the proven minimal writer to the shared page scene graph. See docs/Goodnotes-format-research.md.
 - Samsung Notes, OneNote, Notability, Freenotes and Noteful writers.
-- Production browser QA, tablet/stylus QA and Goodnotes round-trip validation.
+- Production browser QA, tablet/stylus QA and full Goodnotes editability/round-trip validation.
 
 ## Local data and backups
 
