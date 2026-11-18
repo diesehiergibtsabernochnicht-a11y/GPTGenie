@@ -34,7 +34,7 @@ export function composeText(rawText:string,title:string,settings:LayoutSettings,
  const placeGlyph=(char:string,x:number,base:number,size:number)=>{
   const variants=byChar.get(char)??[],variant=variants.length?variants[Math.floor(random()*variants.length)]:undefined;
   const jitter=(random()-.5)*settings.variation/100*size*.16,tilt=(random()-.5)*settings.variation/100*.08,baseline=baselineAt(x,base)+jitter+(x-left)*tilt;
-  if(variant?.strokes?.length){const b=bounds(variant.strokes),scale=size/b.h,glyphBase=variant.baselineY??(b.y+b.h),gy=baseline-glyphBase*scale;
+  if(variant?.strokes?.length){const b=bounds(variant.strokes),scale=size/b.h,glyphBase=variant.baselineY??(b.y+b.h),gy=baseline-(glyphBase-b.y)*scale;
    for(const stroke of variant.strokes){const points=stroke.points.map(p=>({x:x+(p.x-b.x)*scale,y:gy+(p.y-b.y)*scale,pressure:p.pressure,time:p.time,tiltX:p.tiltX,tiltY:p.tiltY}));page.strokes.push({points,color:stroke.color||settings.ink,width:stroke.width*scale,opacity:stroke.opacity,tool:stroke.tool})}
   }else page.fallback.push({text:char,x,y:baseline,size,color:settings.ink});
  };
