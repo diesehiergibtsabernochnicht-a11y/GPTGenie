@@ -58,7 +58,7 @@ Checks:
 - Advanced equation layout (matrices, scalable delimiters, summation limits), connected cursive and rich inline formatting.
 - Full multi-page PDF editor parity is not complete: lasso, selecting/translating generated glyphs, partial eraser, text/photo insertion, page operations and keyboard shortcuts remain.
 - Goodnotes current-app import/editability/round-trip acceptance; other native exporters for Samsung Notes, OneNote, Notability, Freenotes and Noteful.
-- Full visual/accessibility browser QA, tablet/stylus QA, offline QA, Goodnotes destination-app acceptance and GitHub Pages deployment. Core Chromium smoke tests now pass against both root hosting and the `/GPTGenie/` Pages path in GitHub Actions.
+- Full visual/accessibility browser QA, tablet/stylus QA, first-install/offline-update QA, Goodnotes destination-app acceptance and GitHub Pages deployment. Core Chromium smoke tests now pass against both root hosting and the `/GPTGenie/` Pages path in GitHub Actions.
 
 ## Local data and backups
 
@@ -66,7 +66,7 @@ The app stores glyphs, vector strokes, documents, presets and settings in Indexe
 
 ## Privacy and offline
 
-The application does not require a backend, account, telemetry or AI provider. Its current UI, PDF generation and experimental Goodnotes package writing run in the browser. The PWA service worker caches same-origin assets after first load; first installation still requires the app to be served once. No external font CDN is used.
+The application does not require a backend, account, telemetry or AI provider. Its UI, PDF generation and experimental Goodnotes package writing run in the browser. The service worker caches same-origin assets after first load; Playwright verifies offline reload on both root and `/GPTGenie/` paths. First installation still requires the app to be served once. No external font CDN is used.
 
 ## REA
 
