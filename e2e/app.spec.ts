@@ -51,6 +51,7 @@ test('formula editor autosaves locally and exports a native Goodnotes notebook',
   await expect(page.locator('.save-state')).toContainText('Saved locally');
   await page.getByRole('button', { name: /Settings & backup/ }).click();
   await expect(page.locator('.storage-info')).toContainText('Local storage');
+  await expect(page.locator('.storage-info')).toContainText('Estimated');
   await page.locator('.settings-drawer input[type="file"]').setInputFiles(backupPath!);
   await expect(editor).toHaveValue(formula);
 
