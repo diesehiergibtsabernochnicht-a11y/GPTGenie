@@ -139,11 +139,12 @@ function makeIndexEntry(field: number, uuid: string, path: string): Uint8Array {
   return fieldBytes(field, concat([fieldBytes(1, encoder.encode(uuid)), fieldBytes(2, encoder.encode(path))]));
 }
 
+function tinyJpeg():Uint8Array{return fromBase64('/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDABQODxIPDRQSEBIXFRQYHjIhHhwcHj0sLiQySUBMS0dARkVQWnNiUFVtVkVGZIhlbXd7gYKBTmCNl4x9lnN+gXz/2wBDARUXFx4aHjshITt8U0ZTfHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHx8fHz/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAb/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/ALMAH//Z')}
 async function renderThumbnail(page: LayoutPage, options: ExportOptions): Promise<Uint8Array> {
-  if (typeof document === 'undefined') return new Uint8Array();
+  if (typeof document === 'undefined') return tinyJpeg();
   const canvas = document.createElement('canvas'), scale = 420 / page.width;
   canvas.width = 420; canvas.height = Math.round(page.height * scale);
-  const ctx = canvas.getContext('2d'); if (!ctx) return new Uint8Array();
+  const ctx = canvas.getContext('2d'); if (!ctx) return tinyJpeg();
   ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
   if(options.backgroundImage){const image=new Image();await new Promise<void>((resolve,reject)=>{image.onload=()=>resolve();image.onerror=()=>reject(new Error('Could not decode the custom paper image.'));image.src=options.backgroundImage!});const fit=Math.max(canvas.width/image.width,canvas.height/image.height)*(options.backgroundImageScale??100)/100,iw=image.width*fit,ih=image.height*fit;ctx.save();ctx.translate(canvas.width/2+(options.backgroundImageX??0)*scale,canvas.height/2-(options.backgroundImageY??0)*scale);ctx.rotate((options.backgroundImageRotation??0)*Math.PI/180);ctx.globalAlpha=.86;ctx.drawImage(image,-iw/2,-ih/2,iw,ih);ctx.restore();}
   const gap = (options.ruleSpacing ?? options.fontSize * options.lineSpacing) * scale, style = options.style ?? 'plain', left=(options.marginLeft??options.margin)*scale,right=(options.marginRight??options.margin)*scale,top=(options.marginTop??options.margin)*scale,bottom=(options.marginBottom??options.margin)*scale;
