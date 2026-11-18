@@ -1,6 +1,6 @@
 import 'fake-indexeddb/auto';
 import { describe, expect, it } from 'vitest';
-import { exportWorkspace, get, importWorkspace, type Glyph } from './storage';
+import { exportWorkspace, get, importWorkspace, put, putMany, type Glyph } from './storage';
 
 const glyph: Glyph = {
   id: 'g1', char: 'a', dataUrl: '', createdAt: 1,
@@ -17,6 +17,22 @@ const legacyBackup = {
   fastScan: { queue: ['a', 'b'], index: 1, script: 'de' },
   draft: { title: 'Unsaved draft', text: 'a', settings: { ink: '#123456' }, script: 'de', edits: [], updatedAt: 1 },
 };
+
+describe('atomic local persistence', () => {
+  it('commits all workspace records in one transaction', async () => {
+    await putMany([['glyphs', [glyph]], ['documents', []], ['settings', { ink: '#123456' }]]);
+    expect((await get<Glyph[]>('glyphs'))?.[0].id).toBe('g1');
+    expect(await get<unknown[]>('documents')).toEqual([]);
+    expect(await get<{ ink: string }>('settings')).toEqual({ ink: '#123456' });
+  });
+
+  it('rolls back earlier writes when a later value cannot be cloned', async () => {
+    await put('sentinel', { value: 'before' });
+    await expect(putMany([['sentinel', { value: 'after' }], ['invalid', () => 'not cloneable']])).rejects.toThrow();
+    expect(await get<{ value: string }>('sentinel')).toEqual({ value: 'before' });
+    expect(await get('invalid')).toBeUndefined();
+  });
+});
 
 describe('workspace backup and restore', () => {
   it('exports a versioned SHA-256 integrity checksum', async () => {
