@@ -26,7 +26,7 @@ describe('normalizeMath', () => {
 
   it('collects only visible glyphs for missing-character prompts', async () => {
     const { parseMath, flattenFormula } = await import('./math');
-    expect(flattenFormula(parseMath('\\frac{a}{b} + \\\\sqrt{x} + y^2'))).toBe('ab + √x + y2');
+    expect(flattenFormula(parseMath('\\frac{a}{b} + \\sqrt{x} + y^2'))).toBe('ab + √x + y2');
   });
 
   it('attaches superscripts and subscripts to the preceding symbol', async () => {
