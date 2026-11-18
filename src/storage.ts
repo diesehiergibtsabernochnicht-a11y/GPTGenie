@@ -1,7 +1,7 @@
 export type StrokePoint={x:number;y:number;pressure:number;time:number;tiltX:number;tiltY:number};
 export type InkStroke={id:string;tool:'pen'|'marker'|'pencil'|'fountain'|'brush';color:string;width:number;opacity:number;points:StrokePoint[]};
 export type Glyph={id:string;char:string;dataUrl:string;strokes:InkStroke[];baselineY?:number;createdAt:number};
-export type Doc={id:string;title:string;text:string;updatedAt:number;settings?:Record<string,unknown>};
+export type Doc={id:string;title:string;text:string;updatedAt:number;settings?:Record<string,unknown>;edits?:InkStroke[][]};
 export type Preset={id:string;name:string;settings:Record<string,unknown>};
 export type FastScanState={queue:string[];index:number;script:string};
 export type Workspace={schema:'gptgenie-workspace';version:3;exportedAt:string;settings:Record<string,unknown>;glyphs:Glyph[];documents:Doc[];presets:Preset[];fastScan:FastScanState|null;integrity:{algorithm:'SHA-256';digest:string}};
@@ -50,12 +50,14 @@ export async function remove(key:string):Promise<void>{
 export async function all<T>(key:string):Promise<T[]>{return(await get<T[]>(key))??[]}
 function isRecord(value:unknown):value is Record<string,unknown>{return typeof value==='object'&&value!==null&&!Array.isArray(value)}
 function isFiniteNumber(value:unknown):value is number{return typeof value==='number'&&Number.isFinite(value)}
+function validateStroke(stroke:unknown):stroke is InkStroke{
+ return isRecord(stroke)&&typeof stroke.id==='string'&&['pen','marker','pencil','fountain','brush'].includes(String(stroke.tool))&&typeof stroke.color==='string'&&isFiniteNumber(stroke.width)&&stroke.width>0&&isFiniteNumber(stroke.opacity)&&Array.isArray(stroke.points)&&stroke.points.every(point=>isRecord(point)&&['x','y','pressure','time','tiltX','tiltY'].every(k=>isFiniteNumber(point[k])));
+}
 function validateGlyph(value:unknown):value is Glyph{
  if(!isRecord(value)||typeof value.id!=='string'||typeof value.char!=='string'||!value.char||typeof value.dataUrl!=='string'||!isFiniteNumber(value.createdAt)||!Array.isArray(value.strokes))return false;
  if(value.baselineY!==undefined&&!isFiniteNumber(value.baselineY))return false;
- return value.strokes.every(stroke=>isRecord(stroke)&&typeof stroke.id==='string'&&['pen','marker','pencil','fountain','brush'].includes(String(stroke.tool))&&typeof stroke.color==='string'&&isFiniteNumber(stroke.width)&&stroke.width>0&&isFiniteNumber(stroke.opacity)&&Array.isArray(stroke.points)&&stroke.points.every(point=>isRecord(point)&&['x','y','pressure','time','tiltX','tiltY'].every(k=>isFiniteNumber(point[k]))));
+ return value.strokes.every(validateStroke);
 }
-function validateDoc(value:unknown):value is Doc{return isRecord(value)&&typeof value.id==='string'&&typeof value.title==='string'&&typeof value.text==='string'&&isFiniteNumber(value.updatedAt)&&(value.settings===undefined||isRecord(value.settings))}
 function validatePreset(value:unknown):value is Preset{return isRecord(value)&&typeof value.id==='string'&&typeof value.name==='string'&&isRecord(value.settings)}
 async function sha256(value:string):Promise<string>{
  const bytes=new TextEncoder().encode(value),digest=await crypto.subtle.digest('SHA-256',bytes);
