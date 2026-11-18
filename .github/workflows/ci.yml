@@ -39,14 +39,14 @@ jobs:
       - run: npm run test:e2e
       - run: npm run test:e2e:pages
       - name: Upload GitHub Pages build for browser QA
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: gptgenie-dist-pages
           path: dist/
           retention-days: 2
       - name: Upload Goodnotes smoke-test notebook
         if: success()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: gptgenie-goodnotes-smoke-test
           path: artifacts/*.goodnotes
