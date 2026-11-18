@@ -59,7 +59,7 @@ function validateGlyph(value:unknown):value is Glyph{
  if(value.baselineY!==undefined&&!isFiniteNumber(value.baselineY))return false;
  return value.strokes.every(validateStroke);
 }
-function validatePreset(value:unknown):value is Preset{return isRecord(value)&&typeof value.id==='string'&&typeof value.name==='string'&&isRecord(value.settings)}
+function validateDoc(value:unknown):value is Doc{return isRecord(value)&&typeof value.id==='string'&&typeof value.title==='string'&&typeof value.text==='string'&&isFiniteNumber(value.updatedAt)&&(value.settings===undefined||isRecord(value.settings))&&(value.edits===undefined||(Array.isArray(value.edits)&&value.edits.every(page=>Array.isArray(page)&&page.every(validateStroke))))}\nfunction validatePreset(value:unknown):value is Preset{return isRecord(value)&&typeof value.id==='string'&&typeof value.name==='string'&&isRecord(value.settings)}
 function validateDraft(value:unknown):value is Draft{return isRecord(value)&&typeof value.title==='string'&&typeof value.text==='string'&&isRecord(value.settings)&&typeof value.script==='string'&&isFiniteNumber(value.updatedAt)&&Array.isArray(value.edits)&&value.edits.every(page=>Array.isArray(page)&&page.every(validateStroke))}
 async function sha256(value:string):Promise<string>{
  const bytes=new TextEncoder().encode(value),digest=await crypto.subtle.digest('SHA-256',bytes);
