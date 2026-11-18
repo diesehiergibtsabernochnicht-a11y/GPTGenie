@@ -23,7 +23,7 @@ Classification: Observed = exposed in UI or documented by GPTGenie; inferred = i
 ## Text composition and layout
 - Multiline text, paragraphs, line breaks and multipage generation.
 - Bold markup with **text**; coloured marker markup such as ==text== and ==green:text==.
-- Mathematical shorthand for fractions, superscripts and roots. The rebuild now parses LaTeX-like fractions, roots, superscripts and subscripts into a formula tree and lays them out as editable vector glyphs with fraction bars and radical overbars. It remains a partial math engine: matrices, scalable delimiters, summation limits, formula-aware wrapping and advanced equation alignment are absent.
+- Mathematical shorthand for fractions, superscripts and roots. The rebuild now parses LaTeX-like fractions, roots, superscripts and subscripts into a formula tree and lays them out as editable vector glyphs with fraction bars and radical overbars. It remains a partial math engine: matrices, scalable delimiters, summation limits, formula-aware wrapping and advanced equation alignment are absent. Missing-character prompts now use the formula AST, so synthetic fraction bars and parentheses are not incorrectly requested as glyphs.
 - Settings: ink colour, character size, character spacing, word spacing, baseline/position irregularity, variation strength, line spacing, optional rule snapping, line slope/wave, left/right/top/bottom margins and left-margin irregularity. The rebuild now has four margins, slope/wave, rule snapping, margin jitter and a 10-preset cap.
 - Up to 10 saved settings presets, live preview and reset/defaults.
 
