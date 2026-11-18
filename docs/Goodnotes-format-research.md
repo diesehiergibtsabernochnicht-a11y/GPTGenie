@@ -45,7 +45,7 @@ The comparison establishes:
 - The attachment PDF is byte-for-byte identical in both packages.
 - Goodnotes creates/updates package metadata and search members, and the page UUID changes during the one-page export.
 
-This is strong evidence that the GPTGenie-generated page representation is accepted by Goodnotes and that the majority of the page's drawing payloads survive an import/export round trip unchanged. It does not yet prove that a new independent writer can create a valid package: the original GPTGenie export is the known-good seed, and the eight rewritten records plus document-level metadata still need to be understood.
+This is strong evidence that the GPTGenie-generated page representation is accepted by Goodnotes and that the majority of the page's drawing payloads survive an import/export round trip unchanged. In a subsequent test, an independently generated one-page experimental .goodnotes file containing a ruled page and one simple vector stroke was also imported by the user into Goodnotes without an error. This validates the minimal package writer's import path, but not yet rich page composition, selectable/erasable stroke behavior, or every Goodnotes version.
 
 ## Rebuild strategy
 
@@ -64,7 +64,7 @@ This is strong evidence that the GPTGenie-generated page representation is accep
 
 ## Critical limitation
 
-We now have strong real-app evidence for the GPTGenie-to-Goodnotes import path, plus a concrete observed stroke encoding. We do not yet have a validated independent Goodnotes writer. Parser observations and a successful import of the source file do not guarantee that a newly generated archive will be accepted by current Goodnotes versions. No newly generated file should be labelled Goodnotes-compatible until opened and tested in Goodnotes itself.
+We now have a first independently generated candidate that the user successfully imported into Goodnotes without an error. This validates minimal package acceptance, not the full writer: multi-stroke glyphs, page backgrounds, multi-page documents and editability operations still need real-app verification. Do not describe the complete exporter as finished until those acceptance tests pass.
 
 The supplied notebooks were used only for local analysis. Do not commit user notebooks, private document content, page IDs, attachments or extracted content to this public repository.
 
