@@ -58,7 +58,7 @@ Checks:
 - Advanced equation layout (matrices, scalable delimiters, summation limits), connected cursive and rich inline formatting.
 - Full multi-page PDF editor parity is not complete: lasso, selecting/translating generated glyphs, partial eraser, text/photo insertion, page operations and keyboard shortcuts remain.
 - Goodnotes current-app import/editability/round-trip acceptance; other native exporters for Samsung Notes, OneNote, Notability, Freenotes and Noteful.
-- Full visual/accessibility browser QA, tablet/stylus QA, first-install/offline-update QA, Goodnotes destination-app acceptance and GitHub Pages deployment. Core Chromium smoke tests now pass against both root hosting and the `/GPTGenie/` Pages path in GitHub Actions, including a 390px mobile viewport with no horizontal overflow.
+- Full visual/accessibility browser QA, tablet/stylus QA, first-install/offline-update QA, Goodnotes destination-app acceptance and GitHub Pages deployment. Core Chromium smoke tests now pass against both root hosting and the `/GPTGenie/` Pages path in GitHub Actions, including 320px and 390px phone and 768px tablet viewports with no horizontal overflow.
 
 ## Local data and backups
 
