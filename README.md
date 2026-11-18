@@ -42,21 +42,21 @@ Checks:
 - Missing-glyph detection now includes symbols outside the selected script and exposes them in the character picker.
 - Included sample character sets: German, English, Russian, Greek, Arabic, Hebrew, Japanese kana and a maths set. This is not yet the full 50+ language coverage of the reference product.
 - Adaptive notebook stock: blank, wide/narrow ruled, squared and dotted paper; paper-line colour, margin guide, independent left/right/top/bottom margins, grid spacing, line slope/wave, margin irregularity, optional rule snapping and one local PNG/JPEG paper image with zoom, rotation and position controls. Up to 10 presets.
-- German-friendly maths palette and LaTeX-like normalization for numeric fractions, roots, powers/subscripts, common operators and Greek letters. Stacked equation layout is not implemented.
+- Formula-aware maths: recursive formula parsing, stacked fractions with editable bars, square roots with overbars, superscripts, subscripts, Greek/operator symbols and German example presets. Matrices and advanced equation alignment are not implemented.
 - Vector text composition, actual SVG handwriting preview and multipage preview navigation.
 - Experimental page annotation editor: pen, marker, select/move, whole-stroke erase, copy/paste, delete and undo/redo. Added strokes are saved with documents and included in PDF/Goodnotes exports.
 - Multipage PDF export from the same composition engine.
 - Experimental native Goodnotes archive writer: ZIP package, event/index records, PDF paper attachment and native TPL stroke objects. It is not yet validated in Goodnotes from the current app code; pressure/brush fidelity and editor objects remain limited.
-- IndexedDB persistence and JSON workspace backup/restore with SHA-256 integrity validation, atomic restore, unsaved draft and Fast Scan checkpoint.
-- PWA manifest and same-origin service-worker cache.
+- Atomic IndexedDB autosave across the complete workspace, visible save/error state, transactional restore, and JSON backup with SHA-256 integrity validation, unsaved draft and Fast Scan checkpoint.
+- PWA manifest and scoped same-origin service-worker cache; Vite builds are verified for both root hosting and the future `/GPTGenie/` GitHub Pages project path.
 
 ## Not yet implemented / not yet verified
 
 - Full 50+ script catalogue, Arabic shaping, Hebrew bidi/mixed direction, contextual glyph forms and Japanese typesetting.
-- Proper stacked fractions, scalable equation layout, connected cursive and rich inline formatting.
+- Advanced equation layout (matrices, scalable delimiters, summation limits), connected cursive and rich inline formatting.
 - Full multi-page PDF editor parity is not complete: lasso, selecting/translating generated glyphs, partial eraser, text/photo insertion, page operations and keyboard shortcuts remain.
 - Goodnotes current-app import/editability/round-trip acceptance; other native exporters for Samsung Notes, OneNote, Notability, Freenotes and Noteful.
-- Production browser QA, tablet/stylus QA, offline QA and GitHub Pages deployment.
+- Production browser QA, tablet/stylus QA, offline QA, Goodnotes destination-app acceptance and GitHub Pages deployment.
 
 ## Local data and backups
 
@@ -68,4 +68,4 @@ The application does not require a backend, account, telemetry or AI provider. I
 
 ## REA
 
-The REA 2.0 skill and reference files are vendored under .agents/skills/rea. Evidence inventory, workflow maps, limitations, acceptance criteria and backlog are in docs/.
+The REA-based investigation and reconstruction records are maintained in docs/ (evidence ledger, workflow map, feature inventory, verification matrix, backlog and resume checkpoint). The reusable REA skill itself is not copied into this repository.
