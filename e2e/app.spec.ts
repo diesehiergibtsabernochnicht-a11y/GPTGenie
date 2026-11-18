@@ -6,7 +6,7 @@ test('formula editor autosaves locally and exports a native Goodnotes notebook',
   const pageErrors: string[] = [];
   page.on('pageerror', error => pageErrors.push(error.message));
 
-  await page.goto('/');
+  await page.goto('./');
   await page.getByRole('button', { name: /Create notes/ }).click();
 
   const editor = page.locator('textarea.writing-area');
