@@ -105,13 +105,13 @@ describe('Goodnotes archive writer', () => {
     expect(view.getUint16(offset, true)).toBe(0); offset += 2;
     expect(view.getUint16(offset, true)).toBe(1); offset += 2;
     expect(view.getUint32(offset, true)).toBe(1); offset += 4;
-    expect(view.getFloat32(offset, true)).toBeCloseTo(120 * 11 / 6, 3); offset += 4;
-    expect(view.getFloat32(offset, true)).toBeCloseTo(150 * 11 / 6, 3); offset += 4;
-    expect(view.getUint32(offset, true)).toBe(1); offset += 4;
-    expect(view.getFloat32(offset, true)).toBeCloseTo(140 * 11 / 6, 3); offset += 4;
-    expect(view.getFloat32(offset, true)).toBeCloseTo(165 * 11 / 6, 3); offset += 4;
     expect(view.getFloat32(offset, true)).toBeCloseTo(160 * 11 / 6, 3); offset += 4;
-    expect(view.getFloat32(offset, true)).toBeCloseTo(180 * 11 / 6, 3);
+    expect(view.getFloat32(offset, true)).toBeCloseTo(190 * 11 / 6, 3); offset += 4;
+    expect(view.getUint32(offset, true)).toBe(1); offset += 4;
+    expect(view.getFloat32(offset, true)).toBeCloseTo(170 * 11 / 6, 3); offset += 4;
+    expect(view.getFloat32(offset, true)).toBeCloseTo(195 * 11 / 6, 3); offset += 4;
+    expect(view.getFloat32(offset, true)).toBeCloseTo(180 * 11 / 6, 3); offset += 4;
+    expect(view.getFloat32(offset, true)).toBeCloseTo(200 * 11 / 6, 3);
   });
 
   it('emits a page-event group and note file for each composed page', async () => {
