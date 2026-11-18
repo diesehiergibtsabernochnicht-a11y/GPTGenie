@@ -12,8 +12,9 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [x] Live SVG preview uses the same composition engine as PDF and Goodnotes.
 - [x] SHA-256 integrity checks, versioned schema validation and atomic workspace restore, including unsaved draft and Fast Scan checkpoint.
 - [ ] Schema migration tests and recovery from storage quota failures.
-- [x] Unit tests for math normalization, missing glyphs, baseline alignment and Goodnotes archive structure.
-- [ ] Expand tests for IndexedDB migrations, restore failures, layout edge cases and browser runtime.
+- [x] Unit tests for formula AST, missing glyphs, baseline alignment, atomic IndexedDB writes and Goodnotes archive structure.
+- [x] Playwright smoke tests for formula editing, missing-glyph prompts, Goodnotes download/archive shape and draft persistence across reload on root and Pages paths.
+- [ ] Expand tests for IndexedDB migrations, restore failures, Fast Scan workflows, layout edge cases and visual comparisons.
 
 ## P1 — handwriting capture and composition
 - [x] Seven initial script sets plus a maths symbol set; German grid is constrained to 114 entries.
@@ -26,7 +27,6 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [ ] 50+ scripts, contextual Arabic, Hebrew final forms, bidi and mixed RTL/LTR.
 - [ ] Connected cursive mode and ligatures.
 - [x] Recursive formula AST, missing-glyph traversal and vector layout for fractions, roots, superscripts and subscripts; formula palette and German example presets.
-- [x] Recursive formula AST and vector layout for stacked fractions, square roots with overbars, superscripts and subscripts.
 - [ ] Full equation layout: scalable delimiters, matrices, summation limits, formula-aware line wrapping and editor controls.
 - [ ] Bold/highlight markup and table rendering.
 - [x] Basic spacing, baseline jitter, margins and line spacing.
@@ -68,8 +68,8 @@ This repository is a working prototype and architecture foundation, not a comple
 |---|---|---|---|---|---|
 | P0 | Preview, PDF and Goodnotes must remain geometrically identical | Keep one scene graph and shared physical-unit layout; add golden geometry tests | Prevents export/preview drift | Same fixture yields same page count, bounds and stroke coordinates in every renderer | Scene graph tests; medium |
 | P0 | Native Goodnotes schema is reconstructed from one sample and one page-event template | Validate current writer in Goodnotes; capture new fixtures for each brush and page operation | Avoids shipping an import-only or lossy exporter | Current app file imports; strokes independently select/move/recolour/erase; multipage round-trip matches | User Goodnotes test and additional fixtures; high |
-| P1 | Fast Scan and glyph variant state are not yet exercised in a browser | Test queue completion, skip, reload resume, variant edit/delete and quota failures | Prevents data loss in core capture workflow | Browser test suite covers empty/full/missing queues and persisted variants | Browser automation unavailable here; medium |
-| P1 | Maths normalization is inline and loses equation structure | Introduce formula AST and stacked fraction/root scene nodes | More natural school mathematics | Fractions, roots, superscripts and Greek symbols retain layout and remain editable | Scene graph extension; high |
+| P1 | Fast Scan and glyph variant state are not yet covered by E2E | Test queue completion, skip, reload resume, variant edit/delete and quota failures | Prevents data loss in core capture workflow | Browser suite covers empty/full/missing queues and persisted variants | Playwright now available in CI; medium |
+| P1 | Math engine lacks advanced equation structures | Add matrices, scalable delimiters, summation limits and equation alignment | More complete school mathematics | Advanced formula fixtures render with editable strokes and stable wrapping | Scene graph extension; high |
 | P1 | RTL and non-Latin writing need shaping, not only Unicode glyph lookup | Add script-aware shaping and bidi pipeline | Correct reading order and contextual glyphs | Arabic/Hebrew mixed-direction fixtures render correctly | Unicode shaping dependency and extensive tests; high |
 | P2 | The target includes a full PDF editor; rebuild has no editor | Add selectable scene objects, transforms, lasso, tools, undo and page operations | Closes largest functional parity gap | Each editor tool has keyboard, pointer and touch acceptance tests | Shared scene graph; very high |
 | P2 | GitHub Pages project URLs and PWA root paths are not yet aligned | Configure Vite base, manifest, service worker scope and Pages deployment workflow | Stable public hosting and offline reload | Pages URL loads assets, refresh works, PWA installs and offline reload stays in project scope | Do only after app acceptance; medium |
