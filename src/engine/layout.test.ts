@@ -51,6 +51,13 @@ describe('composeText baseline layout', () => {
     expect(page.strokes.some(stroke => stroke.points.length === 2 && stroke.points[0].y === stroke.points[1].y)).toBe(true);
   });
 
+  it('composes a fraction, operator and exponent in one continuous formula', () => {
+    const chars = ['1', '2', '+', 'x'].map(mathGlyph);
+    const [page] = composeText('\\\\frac{1}{2} + x^2', 'combined-formula', settings, chars);
+    expect(page.strokes.length).toBeGreaterThanOrEqual(5);
+    expect(page.strokes.every(stroke => stroke.points.length >= 2)).toBe(true);
+  });
+
   it('places superscript glyphs above and subscript glyphs below the base', () => {
     const [page] = composeText('x^{2}_{1}', 'scripts', settings, ['x', '2', '1'].map(mathGlyph));
     expect(page.strokes).toHaveLength(3);
