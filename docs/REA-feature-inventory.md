@@ -60,7 +60,7 @@ Goodnotes officially imports .goodnotes documents and .goodnotes.zip backups. Th
 - Glyph registry by script, language, Unicode code point, contextual form and variant.
 - Deterministic seeded layout/variation engine using physical page units (points/mm), with per-glyph baseline metrics.
 - Shared scene graph for pages, glyph strokes, annotations, images, paper and text; PDF and Goodnotes exporters consume the same graph.
-- Versioned single-file JSON backup including images, documents, glyphs, presets and settings, with integrity hashes.
+- Versioned single-file JSON backup including documents, editable page annotations, unsaved draft, Fast Scan checkpoint, glyphs, presets and settings, with SHA-256 integrity hashes and atomic restore.
 - PWA shell and offline asset cache; all app fonts bundled locally.
 
 ## Unknowns and limitations
