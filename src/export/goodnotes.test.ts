@@ -20,6 +20,13 @@ const glyph: Glyph = {
     ],
   }],
 };
+const annotation = {
+  id: 'annotation-1', tool: 'pen' as const, color: '#cc3344', width: 2.8, opacity: 1,
+  points: [
+    { x: 160, y: 190, pressure: .7, time: 3, tiltX: 0, tiltY: 0 },
+    { x: 180, y: 200, pressure: .8, time: 4, tiltX: 0, tiltY: 0 },
+  ],
+};
 function readVarint(data: Uint8Array, start: number) {
   let value = 0, shift = 0, pos = start;
   while (pos < data.length) { const b = data[pos++]; value |= (b & 127) << shift; if (b < 128) return { value, next: pos }; shift += 7; }
@@ -43,7 +50,7 @@ function fields(data: Uint8Array) {
 
 describe('Goodnotes archive writer', () => {
   it('writes indexed pages, background PDF and a native TPL stroke object', async () => {
-    const blob = await makeGoodnotes('a', 'Writer test', settings, [glyph]);
+    const blob = await makeGoodnotes('a', 'Writer test', settings, [glyph], [[annotation]]);
     const archive = unzipSync(new Uint8Array(await blob.arrayBuffer()));
     const names = Object.keys(archive);
     expect(names).toContain('index.notes.pb');
@@ -52,7 +59,7 @@ describe('Goodnotes archive writer', () => {
     expect(names).toContain('schema.pb');
     const pagePath = names.find(n => n.startsWith('notes/'))!;
     const pageRecords = delimited(archive[pagePath]);
-    expect(pageRecords).toHaveLength(2);
+    expect(pageRecords).toHaveLength(4);
     const body = fields(pageRecords[1]).find(f => f.number === 7)!.value as Uint8Array;
     const strokePayload = fields(body);
     const frame = strokePayload.find(f => f.number === 2)!.value as Uint8Array;
@@ -60,7 +67,7 @@ describe('Goodnotes archive writer', () => {
     expect(new TextDecoder().decode(frame.slice(-4))).toBe('bv4$');
     const rawSize = new DataView(frame.buffer, frame.byteOffset + 4, 4).getUint32(0, true);
     expect(rawSize).toBeGreaterThan(100);
-    const events = delimited(archive['index.events.pb']);
+    const secondBody = fields(pageRecords[3]).find(f => f.number === 7)!.value as Uint8Array;\n    expect(new TextDecoder().decode((fields(secondBody).find(f => f.number === 2)!.value as Uint8Array).slice(0, 4))).toBe('bv41');\n    const events = delimited(archive['index.events.pb']);
     expect(events).toHaveLength(6);
     const attachmentPath = names.find(n => n.startsWith('attachments/'))!;
     expect(new TextDecoder().decode(archive[attachmentPath].slice(0, 4))).toBe('%PDF');
