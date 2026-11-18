@@ -36,11 +36,12 @@ Checks:
 
 - Three-stage workspace: handwriting, create notes, documents.
 - Sample glyph capture as vector point strokes plus PNG preview; new samples record a writing baseline.
-- Character variants in the data model and character grid.
-- Fast Scan with an explicit queue and missing-only scan.
+- Character variants with a saved-variant selector, edit-in-place, save-as-new and delete.
+- Add custom Unicode symbols directly to the glyph library.
+- Fast Scan with an explicit queue, missing-only mode, skip, faint template, progress and local resume after reload.
 - Missing-glyph detection now includes symbols outside the selected script and exposes them in the character picker.
 - Included sample character sets: German, English, Russian, Greek, Arabic, Hebrew, Japanese kana and a maths set. This is not yet the full 50+ language coverage of the reference product.
-- Adaptive notebook stock: blank, wide/narrow ruled, squared and dotted paper; paper-line colour, margin guide and grid/rule spacing controls. Handwriting size and baseline spacing adapt to the selected stock.
+- Adaptive notebook stock: blank, wide/narrow ruled, squared and dotted paper; paper-line colour, margin guide, independent left/right/top/bottom margins, grid spacing, line slope/wave, margin irregularity and optional rule snapping. Up to 10 presets.
 - German-friendly maths palette and LaTeX-like normalization for numeric fractions, roots, powers/subscripts, common operators and Greek letters. Stacked equation layout is not implemented.
 - Vector text composition, actual SVG handwriting preview and multipage preview navigation.
 - Multipage PDF export from the same composition engine.
