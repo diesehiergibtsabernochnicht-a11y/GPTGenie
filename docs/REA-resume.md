@@ -15,7 +15,7 @@
 5. Corrected capture baseline metadata, Fast Scan queue, unsupported glyph reporting and missing-glyph PDF fallback.
 6. Added Vitest tests for math normalization, German glyph count/missing symbols, baseline layout, and Goodnotes archive structure including multi-page event generation.
 7. Added a repeatable experimental Goodnotes ZIP/protobuf/TPL writer with fresh IDs, PDF paper attachment and one note stream per composed page.
-8. Replaced the text-only preview with an SVG rendering of the same vector composition engine used by PDF and Goodnotes, including page navigation.
+8. Replaced the text-only preview with an SVG rendering of the same vector composition engine used by PDF and Goodnotes, including page navigation. Added saved-variant edit/delete, custom Unicode symbols, four-margin/slope/wave controls and resumable Fast Scan.
 9. Added REA brief, workflow map, evidence ledger, verification matrix and backlog corrections.
 
 ## Material limitations
