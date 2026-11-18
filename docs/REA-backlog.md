@@ -15,9 +15,10 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 
 ## P1 — handwriting capture and composition
 - [x] Seven initial script sets plus a maths symbol set; German grid is constrained to 114 entries.
-- [x] Fast Scan queue now has an explicit sequence; missing-only scan includes unsaved script characters and missing text glyphs.
+- [x] Fast Scan queue, missing-only mode, skip, faint template, progress and IndexedDB resume state.
 - [x] New glyph samples record a baseline metric; the composer uses it to align new samples.
-- [ ] Template overlay, adjustable capture canvas, saved-variant list, edit/delete and richer per-character management.
+- [x] Saved-variant list, select, edit-in-place, save-as-new and delete; custom Unicode symbol capture.
+- [ ] Adjustable capture canvas, reusable trace templates and variant interpolation.
 - [x] Capture pressure/tilt/time and expose five pen choices; actual brush models remain simplified.
 - [ ] Velocity-aware brush models, interpolation, shape variation and higher-fidelity pen dynamics.
 - [ ] 50+ scripts, contextual Arabic, Hebrew final forms, bidi and mixed RTL/LTR.
@@ -26,7 +27,8 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [ ] Proper stacked fractions, scalable roots, equation layout, formula-aware glyph metrics and native math glyph workflows.
 - [ ] Bold/highlight markup and table rendering.
 - [x] Basic spacing, baseline jitter, margins and line spacing.
-- [ ] Advanced line slope/wave, rule snapping, four independent margins and natural left-margin irregularity.
+- [x] Four independent margins, line slope/wave, rule snapping, margin irregularity and up to 10 presets.
+- [ ] More natural left-margin shaping and additional layout controls.
 
 ## P2 — page editor
 - [ ] Multipage editor, page overview, active-page viewport, zoom and pan.
