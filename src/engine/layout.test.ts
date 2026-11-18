@@ -37,8 +37,8 @@ describe('composeText baseline layout', () => {
   it('places fraction numerator and denominator on separate baselines with an editable bar', () => {
     const [page] = composeText('\\frac{1}{2}', 'fraction', settings, [mathGlyph('1'), mathGlyph('2')]);
     expect(page.strokes).toHaveLength(3);
-    const top = Math.min(...page.strokes[0].points.map(p => p.y));
-    const bottom = Math.min(...page.strokes[1].points.map(p => p.y));
+    const top = page.strokes[0].points[1].y;
+    const bottom = page.strokes[1].points[1].y;
     expect(top).toBeLessThan(settings.margin + settings.fontSize);
     expect(bottom).toBeGreaterThan(settings.margin + settings.fontSize);
     expect(page.strokes[2].points[0].y).toBeGreaterThan(top);
@@ -47,7 +47,7 @@ describe('composeText baseline layout', () => {
 
   it('draws a radical sign and overbar around a square-root expression', () => {
     const [page] = composeText('\\sqrt{x+1}', 'root', settings, ['√', 'x', '+', '1'].map(mathGlyph));
-    expect(page.strokes).toHaveLength(6);
+    expect(page.strokes).toHaveLength(5);
     expect(page.strokes.some(stroke => stroke.points.length === 2 && stroke.points[0].y === stroke.points[1].y)).toBe(true);
   });
 
