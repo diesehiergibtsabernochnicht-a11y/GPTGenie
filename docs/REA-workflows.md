@@ -9,9 +9,9 @@ Classification: **Observed** means described or exposed by first-party GPTGenie 
 | App opened | Choose language/script | Character grid and progress for that set | Observed in app index and guide |
 | Character selected | Draw with mouse, finger or stylus | Pressure-aware stroke sample | Observed in first-party docs; live input states unknown |
 | Character has a sample | Draw another version and save | Multiple variants retained and count shown | Observed in FAQ/news |
-| Character saved | Reopen saved variant | Edit or erase portions; replace or add version | Observed in 6 Oct changelog; rebuild currently loads first variant only |
+| Character saved | Reopen saved variant | Edit or erase portions; replace or add version | Observed in 6 Oct changelog; rebuild now has a saved-variant selector, edit-in-place, save-as-new and delete; interpolation remains absent |
 | Script incomplete | Start Fast Scan | Sequential guided drawing with faint template | Observed in docs/news; exact empty/error states unknown |
-| Some characters missing | Start missing-only scan | Only missing glyphs queued; progress and resume | Observed in FAQ/guide; rebuild queue recently corrected, browser QA pending |
+| Some characters missing | Start missing-only scan | Only missing glyphs queued; progress and resume | Observed in FAQ/guide; rebuild now has a persisted queue, skip, faint guide and progress; browser QA pending |
 | Custom symbol needed | Add it under “Sonstiges” | New character can be drawn and used | Observed in 12 Oct changelog; rebuild has no dedicated custom-symbol manager |
 
 ## B. Compose and generate a note
