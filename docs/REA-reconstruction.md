@@ -1,30 +1,33 @@
 # REA reconstruction record
 
-- Target: https://gptgenie.pro/
-- Target source inspected: public website page available to the browser search at capture time.
-- Rebuild goal: local-first handwriting studio with Goodnotes-friendly PDF export.
-- Source repo: diesehiergibtsabernochnicht-a11y/GPTGenie
-- Stack: React, TypeScript, Vite, IndexedDB, Canvas Pointer Events, pdf-lib.
-- Classification: target features described by public page content are observed; app workflows and internal implementation are unknown where not inspectable. Product architecture and local-first storage are proposed.
+- Target: https://www.gptgenie.pro/
+- Evidence date: 2026-11-18
+- Rebuild repository: diesehiergibtsabernochnicht-a11y/GPTGenie
+- Stack: React 19, TypeScript, Vite, IndexedDB, Canvas Pointer Events, vector layout engine, pdf-lib and PWA shell.
+- Rebuild approach: independent implementation from public UI, first-party guides/changelog, user-supplied export samples and public format research.
+- Classification: public UI/docs are observed product evidence; undocumented interactions and internal APIs remain unknown; the local-first data model and app architecture are proposed.
 
 ## Scope decisions
 
-- No server, account system, AI provider, or remote generation dependency.
-- User workspace is persisted in IndexedDB and exported as a single versioned JSON file.
-- Custom glyph samples are drawn locally and embedded in exported PDFs when a matching character exists.
-- Goodnotes compatibility is via standards-based PDF import, not reverse-engineering a proprietary package.
+- No server, account system, AI provider, telemetry or remote generation dependency.
+- The workspace remains local to the browser and is backed up as a portable JSON file.
+- Glyph samples retain vector stroke points and PNG thumbnails.
+- PDF output is generated locally from vector glyphs and page templates.
+- Native Goodnotes export is a required parity feature, not yet integrated in the repository. A one-page experimental archive imported without an error, but it was constructed by adapting the supplied fixture's package structure and identifiers. It is not evidence of a reusable clean writer.
+- Secondary native exporters are also not implemented.
+- Do not claim recovered original source code.
 
-## Verification matrix
+## Current implementation status
 
-| Criterion | Rebuild check | Status |
-|---|---|---|
-| Local persistence | Inspect IndexedDB read/write paths | Unknown until browser runtime test |
-| Workspace backup/restore | Validate versioned JSON schema and restore | Implemented; runtime test pending |
-| Handwriting capture | Canvas pointer event path | Implemented; device test pending |
-| PDF generation | pdf-lib page and glyph embedding | Implemented; runtime test pending |
-| Goodnotes import | PDF compatibility | Unknown until import tested in Goodnotes |
-| Offline operation | No app backend; font CDN remains optional external request | Partial |
+- Implemented foundation: character capture, vector stroke storage, variants in data model, basic Fast Scan, initial script sets, baseline metadata for new samples, text composition, multipage PDF, paper templates, IndexedDB, JSON backup/restore and PWA shell.
+- Partial: variant editing, missing-character handling, mathematical shorthand, paper alignment and settings.
+- Absent: full page editor, actual vector preview, full settings parity, 50+ scripts and shaping, stacked equation layout, reusable Goodnotes serializer and all secondary native exporters.
+- See REA-feature-inventory.md and REA-backlog.md for feature-level detail.
 
-## Limitations
+## Verification
 
-The public site did not expose a source repository for the original application. The current rebuild is an original implementation from observable product positioning and requirements, not recovered source. A local browser QA environment was not available in this GitHub-only execution context.
+See REA-verification.md. CI typecheck/build success is a compile gate only. Browser, tablet/stylus, storage, PDF, Goodnotes editability, offline and screenshot comparison remain unknown until exercised.
+
+## Material limitations
+
+No interactive browser, DevTools, source-map/HAR capture or REA live capture engine was available in this environment. The public target was inspected through indexed frontend UI and first-party product documentation. User-provided .goodnotes samples were inspected locally, but must not be committed or redistributed.
