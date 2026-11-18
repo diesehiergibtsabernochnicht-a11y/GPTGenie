@@ -25,7 +25,7 @@ Last reviewed: 2026-11-18. Results are separated by functional, visual and opera
 | Backup/restore | Source inspection | Versioned JSON export/import read | unknown | Schema validation, checksum, malformed/partial restore and round-trip tests |
 | Offline PWA | Changelog and product docs | Manifest/service worker inspected | unknown | Current service-worker paths are root-relative and need project-subpath support before Pages |
 | Accessibility/responsive | Target supports mobile/tablet/stylus | CSS/source inspection only | unknown | Keyboard, focus, screen reader, phone/tablet/desktop tests |
-| Typecheck/tests/build | GitHub Actions | Typecheck, Vitest and production build pass at commit 412687a | pass (CI) | Re-run after latest preview and docs commits |
+| Typecheck/tests/build | GitHub Actions | Typecheck, Vitest and production build pass at commit a91d86b | pass (CI) | Re-run after latest preview and docs commits |
 | GitHub Pages | Vite/GitHub docs | Not configured; Vite base currently / | unknown | Set /GPTGenie/, fix manifest/SW paths, add deploy workflow, enable Pages source in Settings |
 
 ## Test execution policy
