@@ -97,22 +97,31 @@ function makeEventRecords(pdfSize: number, title: string, attachmentId: string, 
   });
   return concat(output);
 }
-function writeTpl(stroke: LayoutPage['strokes'][number]): Uint8Array {
-  let points = stroke.points.filter(p => Number.isFinite(p.x) && Number.isFinite(p.y));
-  if (points.length < 2) return new Uint8Array();
-  if (points.length > 2000) points = points.filter((_, i) => i === 0 || i === points.length - 1 || i % Math.ceil(points.length / 2000) === 0);
-  const format = encoder.encode('vuA(v)A(S(uu))A(S(uuuu))vA(f)\0');
-  const flags = [0, ...Array(Math.max(0, points.length - 1)).fill(1)];
-  const parts: Uint8Array[] = [u16(2), u32(floatBits(stroke.width)), u32(flags.length), ...flags.map(u16),
-    u32(1), u32(floatBits(points[0].x)), u32(floatBits(points[0].y)), u32(points.length - 1)];
-  for (let i = 1; i < points.length; i++) parts.push(u32(floatBits(points[i - 1].x)), u32(floatBits(points[i - 1].y)), u32(floatBits(points[i].x)), u32(floatBits(points[i].y)));
-  parts.push(u16(1), u32(0));
-  const body = concat(parts), size = 8 + format.length + body.length;
-  const tpl = concat([encoder.encode('tpl\0'), u32(size), format, body]);
-  const block: number[] = [Math.min(tpl.length, 15) << 4];
-  if (tpl.length >= 15) { let remaining = tpl.length - 15; while (remaining >= 255) { block.push(255); remaining -= 255; } block.push(remaining); }
-  const lz4 = concat([Uint8Array.from(block), tpl]);
-  return concat([encoder.encode('bv41'), u32(tpl.length), u32(lz4.length), lz4, encoder.encode('bv4$')]);
+const TPL_CANVAS_SCALE=11/6;
+const TPL_WIDTH_SCALE=2;
+export function encodeUniformStroke(stroke:LayoutPage['strokes'][number]):Uint8Array{
+ let points=stroke.points.filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y));
+ if(points.length<2)return new Uint8Array();
+ if(points.length>2000)points=points.filter((_,i)=>i===0||i===points.length-1||i%Math.ceil(points.length/2000)===0);
+ const scaled=points.map(p=>({x:p.x*TPL_CANVAS_SCALE,y:p.y*TPL_CANVAS_SCALE}));
+ const format=encoder.encode('vuA(v)A(S(uu))A(S(uuuu))vA(f)\0');
+ const flags=[0,...Array(scaled.length-1).fill(1)];
+ const parts:Uint8Array[]=[u16(2),u32(floatBits(stroke.width*TPL_WIDTH_SCALE)),u32(flags.length),...flags.map(u16),
+  u32(1),u32(floatBits(scaled[0].x)),u32(floatBits(scaled[0].y)),u32(scaled.length-1)];
+ for(let i=1;i<scaled.length;i++){
+  const previous=scaled[i-1],current=scaled[i],cx=(previous.x+current.x)/2,cy=(previous.y+current.y)/2;
+  parts.push(u32(floatBits(cx)),u32(floatBits(cy)),u32(floatBits(current.x)),u32(floatBits(current.y)));
+ }
+ parts.push(u16(1),u32(0));
+ const body=concat(parts),size=8+format.length+body.length;
+ return concat([encoder.encode('tpl\0'),u32(size),format,body]);
+}
+function writeTpl(stroke:LayoutPage['strokes'][number]):Uint8Array{
+ const tpl=encodeUniformStroke(stroke);if(!tpl.length)return new Uint8Array();
+ const block:number[]=[Math.min(tpl.length,15)<<4];
+ if(tpl.length>=15){let remaining=tpl.length-15;while(remaining>=255){block.push(255);remaining-=255}block.push(remaining)}
+ const lz4=concat([Uint8Array.from(block),tpl]);
+ return concat([encoder.encode('bv41'),u32(tpl.length),u32(lz4.length),lz4,encoder.encode('bv4$')]);
 }
 function colorMessage(color: string, alpha: number): Uint8Array {
   const hex = color.replace('#', '').padEnd(6, '0');
