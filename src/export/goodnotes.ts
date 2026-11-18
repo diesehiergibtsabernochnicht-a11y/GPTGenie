@@ -139,12 +139,13 @@ function makeIndexEntry(field: number, uuid: string, path: string): Uint8Array {
   return fieldBytes(field, concat([fieldBytes(1, encoder.encode(uuid)), fieldBytes(2, encoder.encode(path))]));
 }
 
-function renderThumbnail(page: LayoutPage, options: ExportOptions): Uint8Array {
+async function renderThumbnail(page: LayoutPage, options: ExportOptions): Promise<Uint8Array> {
   if (typeof document === 'undefined') return new Uint8Array();
   const canvas = document.createElement('canvas'), scale = 420 / page.width;
   canvas.width = 420; canvas.height = Math.round(page.height * scale);
   const ctx = canvas.getContext('2d'); if (!ctx) return new Uint8Array();
   ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  if(options.backgroundImage){const image=new Image();await new Promise<void>((resolve,reject)=>{image.onload=()=>resolve();image.onerror=()=>reject(new Error('Could not decode the custom paper image.'));image.src=options.backgroundImage!});const fit=Math.max(canvas.width/image.width,canvas.height/image.height)*(options.backgroundImageScale??100)/100,iw=image.width*fit,ih=image.height*fit;ctx.save();ctx.translate(canvas.width/2+(options.backgroundImageX??0)*scale,canvas.height/2-(options.backgroundImageY??0)*scale);ctx.rotate((options.backgroundImageRotation??0)*Math.PI/180);ctx.globalAlpha=.86;ctx.drawImage(image,-iw/2,-ih/2,iw,ih);ctx.restore();}
   const gap = (options.ruleSpacing ?? options.fontSize * options.lineSpacing) * scale, style = options.style ?? 'plain', left=(options.marginLeft??options.margin)*scale,right=(options.marginRight??options.margin)*scale,top=(options.marginTop??options.margin)*scale,bottom=(options.marginBottom??options.margin)*scale;
   ctx.strokeStyle = options.backgroundColor ?? '#d5dce5'; ctx.fillStyle = ctx.strokeStyle; ctx.lineWidth = .6;
   if (style !== 'plain') for (let y = top; y < canvas.height - bottom; y += gap) {
@@ -164,7 +165,7 @@ export async function makeGoodnotes(text: string, title: string, options: Export
   const pages = composeText(text, title, options, glyphs);
   pages.forEach((page, index) => { page.strokes.push(...(edits[index] ?? []).map(s => ({ points: s.points, color: s.color, width: s.width, opacity: s.opacity, tool: s.tool }))); });
   const pdf = await PDFDocument.create(); pdf.setTitle(title); pdf.setCreator('GPTGenie');
-  for (const model of pages) { const page = pdf.addPage([model.width, model.height]); drawPaper(page, model.width, model.height, options); }
+  for (const model of pages) { const page = pdf.addPage([model.width, model.height]); await drawPaper(pdf, page, model.width, model.height, options); }
   const pdfBytes = await pdf.save(), docId = randomUuid(), attachmentId = randomUuid(), pageIds = pages.map(() => randomUuid());
   const files: Record<string, Uint8Array> = {
     'index.search.pb': new Uint8Array(),
@@ -172,7 +173,7 @@ export async function makeGoodnotes(text: string, title: string, options: Export
     'index.attachments.pb': makeIndexEntry(11, attachmentId, 'attachments/' + attachmentId),
     'index.events.pb': makeEventRecords(pdfBytes.length, title, attachmentId, docId, pageIds),
     'schema.pb': Uint8Array.of(8, 24),
-    'thumbnail.jpg': renderThumbnail(pages[0], options),
+    'thumbnail.jpg': await renderThumbnail(pages[0], options),
     ['attachments/' + attachmentId]: new Uint8Array(pdfBytes),
   };
   pages.forEach((page, index) => { files['notes/' + pageIds[index]] = writePage(page); });
