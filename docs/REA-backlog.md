@@ -5,7 +5,8 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 ## P0 — architecture and correctness
 - [x] Store editable vector glyph strokes with x/y, pressure, time and tilt; retain PNG preview as a thumbnail.
 - [x] Atomic multi-record IndexedDB autosave with visible saving/saved/error state and rollback on failed clone.
-- [ ] IndexedDB schema migrations, quota handling and storage recovery/export prompts.
+- [x] Display estimated browser storage usage, warn at 80% quota and offer the browser's persistent-storage request.
+- [ ] IndexedDB schema migrations, quota-exceeded recovery and automated backup prompts.
 - [ ] Complete typed scene graph for pages, strokes, glyphs, text, photos, backgrounds, highlights and annotations.
 - [x] Deterministic text-to-glyph layout in physical page units, with multipage composition.
 - [x] PDF exporter renders composed vector strokes and page backgrounds.
@@ -13,7 +14,7 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [x] SHA-256 integrity checks, versioned schema validation and atomic workspace restore, including unsaved draft and Fast Scan checkpoint.
 - [ ] Schema migration tests and recovery from storage quota failures.
 - [x] Unit tests for formula AST, missing glyphs, baseline alignment, atomic IndexedDB writes and Goodnotes archive structure.
-- [x] Playwright smoke tests for formula editing, missing-glyph prompts, Goodnotes download/archive shape, SHA-256 backup export/restore, draft persistence and offline reload on root and Pages paths.
+- [x] Playwright smoke tests for formula editing, missing-glyph prompts, Goodnotes download/archive shape, SHA-256 backup export/restore, storage estimate display, draft persistence and offline reload on root and Pages paths.
 - [x] 320px/390px phone and 768px tablet viewport checks on both hosting paths; fixed a 55px horizontal overflow.
 - [ ] Expand tests for IndexedDB migrations, quota/interrupted restore failures, Fast Scan workflows, landscape/1024px layout, touch/stylus and visual comparisons.
 
