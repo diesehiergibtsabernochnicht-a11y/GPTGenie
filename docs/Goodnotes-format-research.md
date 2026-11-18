@@ -25,24 +25,18 @@ The experimental one-page archive has eight ZIP members. Its event log has six l
 
 ## Stroke geometry encoding
 
-The sample's stroke geometry field begins with Apple's framed LZ4 markers (bv41 or stored-block bv4-), terminated by bv4$. Decompressing the block yields a TPL memory image beginning tpl\0, with an embedded size and format string.
-
-One common format observed in the experimental stroke is:
+The stroke geometry field is an Apple-framed LZ4 stream (bv41 or stored-block bv4-, terminated by bv4$). Its decompressed payload starts with tpl\0, an embedded size and a self-describing type signature. One common uniform-ink signature in all three inspected files is:
 
     vuA(v)A(S(uu))A(S(uuuu))vA(f)
 
-Observed values in the synthetic line sample:
-- leading v value: 2;
-- following u: float32 bit pattern for a nominal width of about 2.4;
-- A(v): pen-up/down flags [0,1,1,...];
-- A(S(uu)): one initial point pair;
-- A(S(uuuu)): a sequence of four-value segment pairs, decoded as consecutive point pairs by the public parser;
-- trailing v: 1;
-- A(f): empty in this sample.
+For this signature, the inspected values contain a version, one uniform width, node flags, move-point pairs, quadratic segment tuples, a trailing version value and an empty float array. Flags use 0 for a move node and 1 for a quadratic segment. The stroke object's protobuf field 4 contains RGBA colour as float32 sub-fields 1–4. The inspected samples use object class code 24; no field-5 highlighter flag or per-point pressure/tilt array was present in these samples.
 
-The stroke object's protobuf field 4 contains RGBA colour as four fixed32 float values. Field 5 is used by the inspected parser as a highlighter flag. This schema is one observed ink type, not a complete semantic specification for every brush, pressure model or Goodnotes version.
+**Coordinate and width calibration matters.** The attached PDF page is A4 (595.28 × 841.89 PDF points), while the Goodnotes page canvas is approximately 1091 × 1543 canvas units. Public format notes document a uniform canvas-to-PDF scale of 6/11, so the writer must convert PDF page coordinates to Goodnotes canvas coordinates by 11/6. The same notes document uniform ink as 0.5 PDF points per stored width unit, so a desired PDF-point width is encoded as twice that value.
 
-Independent parser research documents the same ZIP → protobuf → Apple framed LZ4 → TPL structure and describes stroke payload fields and path arrays. That project is a parser, not an official schema or validated authoring library. Its MIT licence was inspected; no third-party parser source has been copied into this writer.
+Independent measurements of the original and Goodnotes-re-exported user samples support the quadratic node mapping used by the writer: each segment's control point is the midpoint of the previous endpoint and current endpoint, and the segment endpoint is the current sample. Across 131,946 segments, the midpoint residual had a median of 0.0156 and a 95th percentile of 0.0221 canvas units (consistent with the stored coordinate precision). The rebuild now emits a move node followed by these quadratic segments, converts coordinates by 11/6 and scales uniform width by 2. This is covered by a golden TPL geometry test.
+
+The inspected original and re-exported samples all use this uniform signature. This does not establish the format for every Goodnotes pen, pencil, marker, highlighter, shape, image or Goodnotes version. The rebuild still preserves pressure/tilt in its own vector model, but the current native writer uses the observed uniform-width form and does not yet serialize per-point pressure or pencil tilt.
+
 
 ## Real before/after round-trip evidence
 
@@ -59,7 +53,7 @@ The original/re-export comparison established:
 - The attachment PDF is byte-for-byte identical in both packages.
 - Goodnotes creates/updates package metadata and search members, and the page UUID changes during the one-page export.
 
-The user confirmed that the experimental one-page archive imported into Goodnotes without an error. Important qualification: that candidate was assembled by adapting the supplied fixture's event/page identifiers and background attachment. It proves that a minimally altered sample package can be imported, not that a clean serializer works from scratch.
+The user confirmed that the fixture-derived experimental one-page archive imported into Goodnotes without an error. Important qualification: that candidate adapted the supplied fixture's event/page identifiers and background attachment. It proves minimal package acceptance, not that the current clean serializer works from scratch.
 
 ## Rebuild writer now in the repository
 
@@ -70,16 +64,16 @@ It:
 2. generates fresh document, attachment, page, event and stroke UUIDs;
 3. writes a separate background PDF attachment containing the composed pages;
 4. creates page index entries and one notes/<UUID> object stream per composed page;
-5. serializes each placed ink stroke as a protobuf object with Apple-framed LZ4 and a TPL path;
+5. serializes each placed ink stroke as a protobuf object with Apple-framed LZ4 and a TPL path, including the measured canvas scale, uniform-width mapping and quadratic segment nodes;
 6. writes RGBA colour metadata, a page thumbnail in the browser, schema metadata and a ZIP container;
 7. repeats the page-event group and PDF page ordering key for each composed page.
 
 This is a repeatable implementation, but it is still experimental. Current limitations:
-- The observed TPL writer uses a simple 4-tuple path schema. It does not preserve per-point pressure/tilt or reproduce the five target brush engines.
-- Marker metadata is represented, but the full target highlighter model is not.
+- The current writer supports only the observed uniform-width TPL form. It does not preserve per-point pressure/tilt or reproduce the target's distinct pen/pencil/marker/highlighter engines.
+- Marker/highlighter semantics and brush metadata remain unverified; the inspected user samples did not contain a highlighter-specific record.
 - Photos, text boxes, lasso transformations, partial erasure and arbitrary editor objects are not represented because the rebuild editor is not implemented.
 - The event template is based on one observed document/page event sequence. It is not an official Goodnotes schema and may vary across app versions.
-- The browser-generated file has not yet been imported into Goodnotes from the current repository code. CI only checks the archive structure, page events, PDF attachment and TPL framing.
+- The browser-generated file has not yet been imported into Goodnotes from the current repository code. CI checks archive structure, page events, PDF attachment, thumbnail, TPL framing, canvas scaling and quadratic geometry; a short-lived CI smoke-test artifact is generated for the real-app import test.
 - The prior user import test was for the fixture-derived experimental candidate, not this new app-integrated serializer.
 
 ## Required real-app acceptance
@@ -110,5 +104,5 @@ Before calling the exporter compatible:
 - GPTGenie export release notes: https://www.gptgenie.pro/neuigkeiten
 - Goodnotes import support: https://support.goodnotes.com/hc/en-us/articles/7353717816463-Import-files-into-Goodnotes
 - Goodnotes export support: https://support.goodnotes.com/hc/en-us/articles/7353742824975-Export-documents-or-pages
-- Public parser source candidate: https://github.com/Kaih1825/parser-for-goodnotes
-- Public archive notes: https://pypi.org/project/goodparse/
+- Public parser documentation and format notes: https://pypi.org/project/goodparse/
+- Independent parser source candidate: https://github.com/Kaih1825/parser-for-goodnotes
