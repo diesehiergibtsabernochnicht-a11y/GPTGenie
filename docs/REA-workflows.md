@@ -46,3 +46,9 @@ These are **observed target affordances**, but gesture details, hit testing, z-o
 ## State coverage still required
 
 For each screen and action, test: loading, empty, normal success, validation failure, storage quota failure, malformed backup, unsupported glyph, export failure, denied/unsupported file picker, offline reload, mobile orientation, tablet stylus and permission/device states. Do not mark a state passed without an observation.
+
+## Request/response and local-state contract record
+
+No original API request/response shapes were captured. First-party docs describe local browser execution for guest workflows and native export, but account persistence and any authenticated endpoints were not inspected. Mark all target network contracts as **unknown**; do not invent endpoints or payloads.
+
+For the rebuild, the observed code path is local: Pointer Events update an in-memory stroke list; glyphs, documents, presets, settings and Fast Scan progress are written to IndexedDB; composeText derives page stroke geometry; PDF and experimental Goodnotes writers serialize the same composed page geometry; download is initiated in the browser. This is a proposed/reconstructed local contract, not a recovered target API.
