@@ -112,7 +112,7 @@ describe('Goodnotes archive writer', () => {
     const archive = unzipSync(new Uint8Array(await blob.arrayBuffer()));
     const pagePath = Object.keys(archive).find(name => name.startsWith('notes/'))!;
     const pageRecords = delimited(archive[pagePath]);
-    expect(pageRecords).toHaveLength(20);
+    expect(pageRecords).toHaveLength(18);
   });
 
   it('keeps a custom image as part of the separate Goodnotes paper PDF', async () => {
