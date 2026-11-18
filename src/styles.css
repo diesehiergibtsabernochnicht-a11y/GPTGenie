@@ -63,3 +63,14 @@
 .save-state.saving .dot{background:#d69a35;box-shadow:0 0 0 3px rgba(214,154,53,.14)}
 .save-state.error{color:#b42318}
 .save-state.error .dot{background:#d92d20;box-shadow:0 0 0 3px rgba(217,45,32,.14)}
+
+.storage-info{border:1px solid #e7eaf0;border-radius:9px;padding:12px;margin:14px 0;background:#fafbfc}
+.storage-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.storage-head b{font-size:11px;color:#566176}
+.storage-info>small{display:block;font-size:9px;line-height:1.5;color:#8791a2;margin-top:6px}
+.storage-track{height:6px;border-radius:10px;background:#e9edf3;overflow:hidden}
+.storage-track span{display:block;height:100%;border-radius:10px;background:#6e9a80;transition:width .2s}
+.storage-info p{font-size:10px;line-height:1.5;color:#a35b34;margin:8px 0 0}
+.dark .storage-info{background:#1b2230;border-color:#3a4559}
+.dark .storage-head b{color:#dbe1ed}
+.dark .storage-track{background:#333d50}
