@@ -6,7 +6,7 @@
 - [ ] Complete typed scene graph for pages, strokes, glyphs, text, photos, backgrounds and annotations.
 - [x] Deterministic text-to-glyph layout in physical page units, with multipage composition.
 - [x] PDF exporter renders composed vector strokes and page backgrounds.
-- [ ] Native Goodnotes writer and real-app validation, including independently erasable strokes. Source/round-trip fixture analysis is complete; independent serialization is not.
+- [x] Minimal independent Goodnotes package writer validated for import into Goodnotes with a synthetic ruled page and one vector stroke.\n- [ ] Rich native export: composed glyphs, selectable/erasable objects, all paper backgrounds and multipage documents.
 - [x] Portable JSON workspace backup/restore includes glyph samples, documents, presets and settings.
 - [ ] Add backup integrity checks, migration tests and recovery from partial restore failures.
 
@@ -18,7 +18,7 @@
 - [ ] Velocity-aware brush models, interpolation and higher-fidelity pen dynamics.
 - [ ] 50+ scripts, contextual Arabic, Hebrew final forms, bidi and mixed RTL/LTR.
 - [ ] Connected cursive mode and ligatures.
-- [ ] Bold/highlight markup and mathematical shorthand.
+- [x] Basic LaTeX-like mathematical shorthand normalization, formula insertion palette and dedicated math-symbol handwriting set.\n- [ ] Proper stacked fractions, scalable roots, equation layout and formula-aware glyph metrics.\n- [ ] Bold/highlight markup.
 - [x] Basic spacing, baseline jitter, margins and line spacing.
 - [ ] Advanced line slope/wave, natural margins, rule snapping and per-glyph metrics.
 
@@ -32,11 +32,11 @@
 
 ## P3 — export and polish
 - [x] PDF export and local-first PWA shell.
-- [ ] Goodnotes native export; archive and stroke-format research is documented, writer not implemented.
+- [x] Minimal Goodnotes native package writer: first synthetic candidate imported successfully.\n- [ ] Complete Goodnotes exporter using the shared scene graph; test glyph-level editing, backgrounds, multi-page, photos and annotations.
 - [ ] Samsung Notes, OneNote, Notability, Freenotes and Noteful, each independently validated.
 - [ ] Offline cache hardening, local fonts, performance mode and accessibility.
 - [ ] Mobile/tablet QA and matched-viewport screenshot comparisons.
 
 ## Current status
 
-The repository now has vector handwriting capture, a basic text composition engine, multipage PDF generation, IndexedDB persistence, JSON workspace backup/restore and a PWA shell. It remains a prototype rather than a complete recreation. The two real Goodnotes samples establish that GPTGenie's generated strokes are accepted and mostly survive a Goodnotes round trip, but a standalone native writer has not yet been implemented or validated. The full page editor, broad multilingual catalogue, advanced text formatting, secondary notebook exporters and live runtime QA remain open.
+The repository now has vector handwriting capture, a basic text composition engine, multipage PDF generation, IndexedDB persistence, JSON workspace backup/restore and a PWA shell. It remains a prototype rather than a complete recreation. The two real Goodnotes samples establish that GPTGenie's generated strokes are accepted and mostly survive a Goodnotes round trip. A minimal independent synthetic writer has also passed an import-without-error test; rich pages and editing operations are still unverified. The full page editor, broad multilingual catalogue, advanced text formatting, secondary notebook exporters and live runtime QA remain open.
