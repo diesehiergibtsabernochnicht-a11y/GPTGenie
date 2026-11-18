@@ -26,7 +26,8 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [ ] 50+ scripts, contextual Arabic, Hebrew final forms, bidi and mixed RTL/LTR.
 - [ ] Connected cursive mode and ligatures.
 - [x] Basic LaTeX-like mathematical shorthand normalization and formula palette.
-- [ ] Proper stacked fractions, scalable roots, equation layout, formula-aware glyph metrics and native math glyph workflows.
+- [x] Recursive formula AST and vector layout for stacked fractions, square roots with overbars, superscripts and subscripts.
+- [ ] Full equation layout: scalable delimiters, matrices, summation limits, formula-aware line wrapping and editor controls.
 - [ ] Bold/highlight markup and table rendering.
 - [x] Basic spacing, baseline jitter, margins and line spacing.
 - [x] Four independent margins, line slope/wave, rule snapping, margin irregularity and up to 10 presets.
