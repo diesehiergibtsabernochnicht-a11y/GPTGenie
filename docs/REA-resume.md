@@ -3,7 +3,7 @@
 - Date: 2026-11-18
 - Repository: diesehiergibtsabernochnicht-a11y/GPTGenie
 - Branch: main
-- Recent code commits: experimental Goodnotes writer 8a5215a; Goodnotes UI integration b9c8d86; structural tests 412687a; live scene preview e2bdd0a and 3765746.
+- Recent code commits: experimental Goodnotes writer 8a5215a; scene preview e2bdd0a/3765746; independent margins d624817; variant management 382c89e; Fast Scan persistence e0183ac/95bc09a; custom symbols 8e79961; CI green at a91d86b.
 - Scope: public GPTGenie frontend reconstruction, local-first architecture, native editable notebook export and GitHub Pages release preparation.
 
 ## Completed in this pass
@@ -15,7 +15,7 @@
 5. Corrected capture baseline metadata, Fast Scan queue, unsupported glyph reporting and missing-glyph PDF fallback.
 6. Added Vitest tests for math normalization, German glyph count/missing symbols, baseline layout, and Goodnotes archive structure including multi-page event generation.
 7. Added a repeatable experimental Goodnotes ZIP/protobuf/TPL writer with fresh IDs, PDF paper attachment and one note stream per composed page.
-8. Replaced the text-only preview with an SVG rendering of the same vector composition engine used by PDF and Goodnotes, including page navigation. Added saved-variant edit/delete, custom Unicode symbols, four-margin/slope/wave controls and resumable Fast Scan.
+8. Replaced the text-only preview with an SVG rendering of the same vector composition engine used by PDF and Goodnotes, including page navigation. Added saved-variant edit/delete, custom Unicode symbols, four-margin/slope/wave controls, 10-preset cap, resumable Fast Scan, skip, faint template and progress indicator.
 9. Added REA brief, workflow map, evidence ledger, verification matrix and backlog corrections.
 
 ## Material limitations
