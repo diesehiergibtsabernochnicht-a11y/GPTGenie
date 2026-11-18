@@ -17,15 +17,15 @@ Last reviewed: 2026-11-18. Results are separated by functional, visual and opera
 | Settings parity | Target app index exposes four margins, slant, snapping, jitter and presets | Four margins, slope/wave, margin irregularity, snapping and 10-preset cap implemented | partial | Compare exact defaults, units, all ranges and preview behaviour with live target |
 | Live preview | Target app index/guide | SVG preview uses the same composeText scene as PDF/Goodnotes; multipage navigation | pass (code and build test) | Visual comparison and browser interaction still pending |
 | PDF output | Target guide | pdf-lib composes vector strokes and pages | unknown | No local browser PDF opened/compared in this environment |
-| PDF editor | Target app index/guide | No generated-page editor in repo | fail | Implement full object/page editing and undo model |
+| PDF/page editor | Target app index/guide | Pen/marker annotation, selection/move, whole-stroke erase, copy/paste, delete, undo/redo; edits persist and export | partial | No lasso, generated-glyph selection, partial eraser, text/photo insertion, page operations or shortcut parity |
 | Native Goodnotes archive | User samples and public parser research | Repeatable ZIP/protobuf/TPL writer, fresh IDs, page records, separate PDF background; unit tests cover one- and multi-page archive structure | partial (structural tests only) | Import current app-generated file into Goodnotes |
 | Goodnotes stroke editability | First-party guide claims individual strokes | TPL stroke records generated, but no current-code destination-app test | unknown | User must verify select, move, recolour, erase, multi-stroke and multi-page |
 | Other native exporters | First-party news/guides | No writers present | fail | Implement and validate each target separately |
 | IndexedDB persistence | Source inspection | IndexedDB code read | unknown | Reload, quota, migration and atomicity tests |
-| Backup/restore | Source inspection | Versioned JSON export/import read | unknown | Schema validation, checksum, malformed/partial restore and round-trip tests |
+| Backup/restore | Source inspection | Version 3 SHA-256 checksum, schema validation, atomic IndexedDB restore, unsaved draft and Fast Scan checkpoint; tests cover tampering and malformed input | pass (unit-level) | Browser storage quota, interrupted transaction and cross-browser restore tests |
 | Offline PWA | Changelog and product docs | Manifest/service worker inspected | unknown | Current service-worker paths are root-relative and need project-subpath support before Pages |
 | Accessibility/responsive | Target supports mobile/tablet/stylus | CSS/source inspection only | unknown | Keyboard, focus, screen reader, phone/tablet/desktop tests |
-| Typecheck/tests/build | GitHub Actions | Typecheck, Vitest and production build pass at commit a91d86b | pass (CI) | Re-run after latest preview and docs commits |
+| Typecheck/tests/build | GitHub Actions | Typecheck, Vitest and production build pass at commit 083f9d1 | pass (CI) | Re-run after latest preview and docs commits |
 | GitHub Pages | Vite/GitHub docs | Not configured; Vite base currently / | unknown | Set /GPTGenie/, fix manifest/SW paths, add deploy workflow, enable Pages source in Settings |
 
 ## Test execution policy
