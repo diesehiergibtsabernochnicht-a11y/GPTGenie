@@ -53,7 +53,7 @@ describe('composeText baseline layout', () => {
 
   it('composes a fraction, operator and exponent in one continuous formula', () => {
     const chars = ['1', '2', '+', 'x'].map(mathGlyph);
-    const [page] = composeText('\\\\frac{1}{2} + x^2', 'combined-formula', settings, chars);
+    const [page] = composeText('\\frac{1}{2} + x^2', 'combined-formula', settings, chars);
     expect(page.strokes.length).toBeGreaterThanOrEqual(5);
     expect(page.strokes.every(stroke => stroke.points.length >= 2)).toBe(true);
   });
