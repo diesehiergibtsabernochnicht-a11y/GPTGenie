@@ -4,7 +4,8 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 
 ## P0 — architecture and correctness
 - [x] Store editable vector glyph strokes with x/y, pressure, time and tilt; retain PNG preview as a thumbnail.
-- [ ] IndexedDB schema migrations, transactional autosave, quota handling and storage error recovery.
+- [x] Atomic multi-record IndexedDB autosave with visible saving/saved/error state and rollback on failed clone.
+- [ ] IndexedDB schema migrations, quota handling and storage recovery/export prompts.
 - [ ] Complete typed scene graph for pages, strokes, glyphs, text, photos, backgrounds, highlights and annotations.
 - [x] Deterministic text-to-glyph layout in physical page units, with multipage composition.
 - [x] PDF exporter renders composed vector strokes and page backgrounds.
@@ -51,7 +52,8 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [ ] Improve Goodnotes pressure and brush-specific TPL schemas; add photos, text boxes, highlighters and editor object support.
 - [ ] Samsung Notes, OneNote, Notability, Freenotes and Noteful writers, each independently validated.
 - [x] PDF export and local-first PWA shell.
-- [ ] Offline cache hardening, project-subpath service worker, local fonts, performance mode and accessibility.
+- [x] Project-subpath-aware Vite base, manifest and service-worker registration; scoped offline cache and navigation-only app-shell fallback.
+- [ ] Offline runtime QA, local fonts, performance mode and accessibility.
 - [ ] Mobile/tablet QA and matched-viewport screenshot comparisons.
 - [ ] GitHub Pages deployment after parity and release checks.
 
