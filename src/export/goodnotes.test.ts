@@ -22,6 +22,29 @@ const glyph: Glyph = {
     ],
   }],
 };
+function formulaGlyph(char: string): Glyph {
+  const paths: Record<string, number[][][]> = {
+    '1': [[[100, 208], [112, 194], [112, 230]], [[100, 230], [126, 230]]],
+    '2': [[[96, 202], [104, 194], [119, 194], [126, 201], [126, 210], [98, 230], [128, 230]]],
+    '+': [[[112, 199], [112, 227]], [[98, 213], [126, 213]]],
+    'x': [[[98, 198], [124, 226]], [[124, 198], [98, 226]]],
+  };
+  return {
+    ...glyph,
+    id: 'formula-' + char,
+    char,
+    strokes: paths[char].map((points, index) => ({
+      id: 'formula-' + char + '-' + index,
+      tool: 'pen' as const,
+      color: '#25304a',
+      width: 2.4,
+      opacity: 1,
+      points: points.map(([x, y], pointIndex) => ({
+        x, y, pressure: 1, time: pointIndex, tiltX: 0, tiltY: 0,
+      })),
+    })),
+  };
+}
 const annotation = {
   id: 'annotation-1', tool: 'pen' as const, color: '#cc3344', width: 2.8, opacity: 1,
   points: [
@@ -83,13 +106,13 @@ describe('Goodnotes archive writer', () => {
   });
 
   it('exports formula layout as individual native Goodnotes ink objects', async () => {
-    const formulaGlyphs = ['1', '2', '+', 'x'].map(char => ({ ...glyph, id: 'formula-' + char, char }));
+    const formulaGlyphs = ['1', '2', '+', 'x'].map(formulaGlyph);
     const blob = await makeGoodnotes('\\frac{1}{2} + x^2', 'Formula notebook', settings, formulaGlyphs);
     if (process.env.GITHUB_ACTIONS === 'true') { mkdirSync('artifacts', { recursive: true }); writeFileSync('artifacts/GPTGenie-formula-layout-smoke-test.goodnotes', Buffer.from(await blob.arrayBuffer())); }
     const archive = unzipSync(new Uint8Array(await blob.arrayBuffer()));
     const pagePath = Object.keys(archive).find(name => name.startsWith('notes/'))!;
     const pageRecords = delimited(archive[pagePath]);
-    expect(pageRecords).toHaveLength(12);
+    expect(pageRecords).toHaveLength(20);
   });
 
   it('keeps a custom image as part of the separate Goodnotes paper PDF', async () => {
