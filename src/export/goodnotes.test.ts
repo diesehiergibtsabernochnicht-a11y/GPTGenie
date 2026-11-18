@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { unzipSync } from 'fflate';
 import { PDFDocument } from 'pdf-lib';
-import { makeGoodnotes } from './goodnotes';
+import { makeGoodnotes, encodeUniformStroke } from './goodnotes';
 import type { Glyph } from '../storage';
 
 const settings = {
@@ -89,6 +89,29 @@ describe('Goodnotes archive writer', () => {
     const attachmentPath = Object.keys(archive).find(n => n.startsWith('attachments/'))!;
     const pdf = await PDFDocument.load(archive[attachmentPath]);
     expect(pdf.getPageCount()).toBe(1);
+  });
+
+  it('encodes Goodnotes canvas coordinates, stroke width and midpoint quadratic segments', () => {
+    const raw = encodeUniformStroke(annotation);
+    expect(new TextDecoder().decode(raw.slice(0, 4))).toBe('tpl\0');
+    const formatEnd = raw.indexOf(0, 8);
+    expect(new TextDecoder().decode(raw.slice(8, formatEnd))).toBe('vuA(v)A(S(uu))A(S(uuuu))vA(f)');
+    const view = new DataView(raw.buffer, raw.byteOffset, raw.byteLength);
+    let offset = formatEnd + 1;
+    expect(view.getUint16(offset, true)).toBe(2); offset += 2;
+    expect(view.getFloat32(offset, true)).toBeCloseTo(5.6, 4); offset += 4;
+    const flags = view.getUint32(offset, true); offset += 4;
+    expect(flags).toBe(2);
+    expect(view.getUint16(offset, true)).toBe(0); offset += 2;
+    expect(view.getUint16(offset, true)).toBe(1); offset += 2;
+    expect(view.getUint32(offset, true)).toBe(1); offset += 4;
+    expect(view.getFloat32(offset, true)).toBeCloseTo(120 * 11 / 6, 3); offset += 4;
+    expect(view.getFloat32(offset, true)).toBeCloseTo(150 * 11 / 6, 3); offset += 4;
+    expect(view.getUint32(offset, true)).toBe(1); offset += 4;
+    expect(view.getFloat32(offset, true)).toBeCloseTo(140 * 11 / 6, 3); offset += 4;
+    expect(view.getFloat32(offset, true)).toBeCloseTo(165 * 11 / 6, 3); offset += 4;
+    expect(view.getFloat32(offset, true)).toBeCloseTo(160 * 11 / 6, 3); offset += 4;
+    expect(view.getFloat32(offset, true)).toBeCloseTo(180 * 11 / 6, 3);
   });
 
   it('emits a page-event group and note file for each composed page', async () => {
