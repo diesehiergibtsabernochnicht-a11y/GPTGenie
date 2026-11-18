@@ -44,16 +44,17 @@ Checks:
 - Adaptive notebook stock: blank, wide/narrow ruled, squared and dotted paper; paper-line colour, margin guide, independent left/right/top/bottom margins, grid spacing, line slope/wave, margin irregularity and optional rule snapping. Up to 10 presets.
 - German-friendly maths palette and LaTeX-like normalization for numeric fractions, roots, powers/subscripts, common operators and Greek letters. Stacked equation layout is not implemented.
 - Vector text composition, actual SVG handwriting preview and multipage preview navigation.
+- Experimental page annotation editor: pen, marker, select/move, whole-stroke erase, copy/paste, delete and undo/redo. Added strokes are saved with documents and included in PDF/Goodnotes exports.
 - Multipage PDF export from the same composition engine.
 - Experimental native Goodnotes archive writer: ZIP package, event/index records, PDF paper attachment and native TPL stroke objects. It is not yet validated in Goodnotes from the current app code; pressure/brush fidelity and editor objects remain limited.
-- IndexedDB persistence and JSON workspace backup/restore.
+- IndexedDB persistence and JSON workspace backup/restore with SHA-256 integrity validation, atomic restore, unsaved draft and Fast Scan checkpoint.
 - PWA manifest and same-origin service-worker cache.
 
 ## Not yet implemented / not yet verified
 
 - Full 50+ script catalogue, Arabic shaping, Hebrew bidi/mixed direction, contextual glyph forms and Japanese typesetting.
 - Proper stacked fractions, scalable equation layout, connected cursive and rich inline formatting.
-- Full multi-page PDF editor with lasso, transform, clipboard, partial eraser, image insertion and undo history.
+- Full multi-page PDF editor parity is not complete: lasso, selecting/translating generated glyphs, partial eraser, text/photo insertion, page operations and keyboard shortcuts remain.
 - Goodnotes current-app import/editability/round-trip acceptance; other native exporters for Samsung Notes, OneNote, Notability, Freenotes and Noteful.
 - Production browser QA, tablet/stylus QA, offline QA and GitHub Pages deployment.
 
