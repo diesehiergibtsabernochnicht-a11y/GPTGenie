@@ -18,7 +18,7 @@ A local-first handwriting studio. This repository is an active reconstruction of
 - Shared vector layout engine and SVG live preview
 - pdf-lib for PDF and Goodnotes background PDF generation
 - fflate for browser-side ZIP writing
-- Vitest unit tests
+- Vitest unit tests and Playwright browser smoke tests
 - Vite PWA shell and service-worker asset cache
 
 ## Run
@@ -31,6 +31,8 @@ Checks:
     npm run typecheck
     npm test
     npm run build
+    npm run test:e2e
+    npm run test:e2e:pages
 
 ## Implemented in this branch
 
@@ -56,7 +58,7 @@ Checks:
 - Advanced equation layout (matrices, scalable delimiters, summation limits), connected cursive and rich inline formatting.
 - Full multi-page PDF editor parity is not complete: lasso, selecting/translating generated glyphs, partial eraser, text/photo insertion, page operations and keyboard shortcuts remain.
 - Goodnotes current-app import/editability/round-trip acceptance; other native exporters for Samsung Notes, OneNote, Notability, Freenotes and Noteful.
-- Production browser QA, tablet/stylus QA, offline QA, Goodnotes destination-app acceptance and GitHub Pages deployment.
+- Full visual/accessibility browser QA, tablet/stylus QA, offline QA, Goodnotes destination-app acceptance and GitHub Pages deployment. Core Chromium smoke tests now pass against both root hosting and the `/GPTGenie/` Pages path in GitHub Actions.
 
 ## Local data and backups
 
