@@ -21,12 +21,12 @@ Last reviewed: 2026-11-18. Results are separated by functional, visual and opera
 | Native Goodnotes archive | User samples and public parser research | Repeatable ZIP/protobuf/TPL writer, fresh IDs, page records, separate PDF background; unit tests cover one- and multi-page archive structure | partial (structural tests only) | Import current app-generated file into Goodnotes |
 | Goodnotes stroke editability | First-party guide claims individual strokes | TPL stroke records generated, but no current-code destination-app test | unknown | User must verify select, move, recolour, erase, multi-stroke and multi-page |
 | Other native exporters | First-party news/guides | No writers present | fail | Implement and validate each target separately |
-| IndexedDB persistence | Source inspection | IndexedDB code read | unknown | Reload, quota, migration and atomicity tests |
+| IndexedDB persistence | Source inspection | Atomic six-record workspace transaction; rollback-on-clone-failure and successful write unit tests | partial | Reload, quota, migration, multi-tab and browser runtime tests |
 | Backup/restore | Source inspection | Version 3 SHA-256 checksum, schema validation, atomic IndexedDB restore, unsaved draft and Fast Scan checkpoint; tests cover tampering and malformed input | pass (unit-level) | Browser storage quota, interrupted transaction and cross-browser restore tests |
-| Offline PWA | Changelog and product docs | Manifest/service worker inspected | unknown | Current service-worker paths are root-relative and need project-subpath support before Pages |
+| Offline PWA | Changelog and product docs | Manifest uses relative scope/start URL; Vite base-aware SW registration; SW confines cache to scope and only app-shell-fallbacks navigations | partial | Test root and /GPTGenie/ deploy paths, offline install/update and real browser reload |
 | Accessibility/responsive | Target supports mobile/tablet/stylus | CSS/source inspection only | unknown | Keyboard, focus, screen reader, phone/tablet/desktop tests |
-| Typecheck/tests/build | GitHub Actions | Typecheck, Vitest and production build pass at commit 083f9d1 | pass (CI) | Re-run after latest preview and docs commits |
-| GitHub Pages | Vite/GitHub docs | Not configured; Vite base currently / | unknown | Set /GPTGenie/, fix manifest/SW paths, add deploy workflow, enable Pages source in Settings |
+| Typecheck/tests/build | GitHub Actions | Latest observed successful CI: run 162 at 6f074a6; subsequent persistence and PWA changes are queued/running | unknown | Verify newest CI run after all changes |
+| GitHub Pages | Vite/GitHub docs | Vite supports /GPTGenie/ build base; manifest and service worker now use relative/scoped paths; no deployment workflow yet | partial (build path prepared) | Finish app parity and acceptance, add deploy workflow and enable Pages source in Settings |
 
 ## Test execution policy
 
