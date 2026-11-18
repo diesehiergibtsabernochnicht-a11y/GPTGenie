@@ -25,6 +25,6 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: gptgenie-goodnotes-smoke-test
-          path: artifacts/GPTGenie-current-writer-smoke-test.goodnotes
+          path: artifacts/*.goodnotes
           if-no-files-found: error
           retention-days: 7
