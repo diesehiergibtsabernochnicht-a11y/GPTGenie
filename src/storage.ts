@@ -43,6 +43,12 @@ export async function put(key:string,value:unknown):Promise<void>{
  tx.objectStore(STORE).put(value,key);
  await done(tx);
 }
+export async function putMany(entries:readonly (readonly [string,unknown])[]):Promise<void>{
+ const d=await db(),tx=d.transaction(STORE,'readwrite'),completed=done(tx);
+ try{const store=tx.objectStore(STORE);for(const [key,value] of entries)store.put(value,key)}
+ catch(error){try{tx.abort()}catch{};await completed.catch(()=>{});throw error}
+ await completed;
+}
 export async function remove(key:string):Promise<void>{
  const d=await db(),tx=d.transaction(STORE,'readwrite');
  tx.objectStore(STORE).delete(key);
