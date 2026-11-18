@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { unzipSync } from 'fflate';
 import { PDFDocument } from 'pdf-lib';
 import { makeGoodnotes } from './goodnotes';
@@ -52,6 +53,7 @@ function fields(data: Uint8Array) {
 describe('Goodnotes archive writer', () => {
   it('writes indexed pages, background PDF and a native TPL stroke object', async () => {
     const blob = await makeGoodnotes('a', 'Writer test', settings, [glyph], [[annotation]]);
+    if (process.env.GITHUB_ACTIONS === 'true') { mkdirSync('artifacts', { recursive: true }); writeFileSync('artifacts/GPTGenie-current-writer-smoke-test.goodnotes', Buffer.from(await blob.arrayBuffer())); }
     const archive = unzipSync(new Uint8Array(await blob.arrayBuffer()));
     const names = Object.keys(archive);
     expect(names).toContain('index.notes.pb');
