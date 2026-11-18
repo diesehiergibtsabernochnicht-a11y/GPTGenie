@@ -9,7 +9,8 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [x] Deterministic text-to-glyph layout in physical page units, with multipage composition.
 - [x] PDF exporter renders composed vector strokes and page backgrounds.
 - [x] Live SVG preview uses the same composition engine as PDF and Goodnotes.
-- [ ] Backup integrity hashes, schema migration tests and recovery from partial restore failures.
+- [x] SHA-256 integrity checks, versioned schema validation and atomic workspace restore, including unsaved draft and Fast Scan checkpoint.
+- [ ] Schema migration tests and recovery from storage quota failures.
 - [x] Unit tests for math normalization, missing glyphs, baseline alignment and Goodnotes archive structure.
 - [ ] Expand tests for IndexedDB migrations, restore failures, layout edge cases and browser runtime.
 
@@ -31,11 +32,15 @@ Priorities reflect dependency and correctness, not a promise that the entire ref
 - [ ] More natural left-margin shaping and additional layout controls.
 
 ## P2 — page editor
-- [ ] Multipage editor, page overview, active-page viewport, zoom and pan.
-- [ ] Selection/lasso, multi-select and object inspector.
-- [ ] Pen/highlighter/eraser with partial-stroke geometry.
+- [x] Multipage page preview with page navigation and an annotation layer.
+- [x] Basic annotation tools: pen, marker, select/move, whole-stroke eraser, copy/paste, delete and undo/redo.
+- [ ] Full multipage editor viewport, zoom/pan and page overview.
+- [ ] Lasso/multi-select and object inspector; current selection only moves manually added ink, not generated glyphs.
+- [x] Pen, marker and whole-stroke eraser for manually added ink.
+- [ ] Partial-stroke eraser, highlighter opacity/brush model and generated-glyph editing.
 - [ ] Handwritten text insertion, photos, page backgrounds and page insertion/reorder/delete.
-- [ ] Undo/redo, clipboard, shortcuts, stylus-only mode and touch gestures.
+- [x] Undo/redo and copy/paste for page annotations.
+- [ ] Keyboard shortcuts, stylus-only mode and richer touch gestures.
 - [ ] Extend the shared scene graph to editor objects and annotations.
 
 ## P3 — export and release
