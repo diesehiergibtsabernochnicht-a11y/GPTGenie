@@ -5,6 +5,8 @@ function cleanGroup(v:string){return v.startsWith("{")?v.slice(1,-1):v}
 function scriptify(s:string,map:Record<string,string>){return [...s].map(c=>map[c]??c).join("")}
 export function normalizeMath(input:string):string{
  let s=input.replace(/\\\\/g,"\n");
+ s=s.replace(/\bsqrt\(([^()]*)\)/g,"√($1)");
+ s=s.replace(/\b(\d)\s*\/\s*(\d)\b/g,"$1⁄$2");
  for(let pass=0;pass<4;pass++){
   s=s.replace(/\\frac\s*(\{[^{}]*\}|[a-zA-Z0-9])\s*(\{[^{}]*\}|[a-zA-Z0-9])/g,(_,a,b)=>"("+cleanGroup(a)+")⁄("+cleanGroup(b)+")");
   s=s.replace(/\\sqrt\s*(\{[^{}]*\}|[a-zA-Z0-9])/g,(_,v)=>"√("+cleanGroup(v)+")");
