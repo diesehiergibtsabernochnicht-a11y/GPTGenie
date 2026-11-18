@@ -1,43 +1,62 @@
 # GPTGenie
 
-A local-first handwriting studio for turning text into personalised handwritten PDFs, with Goodnotes-friendly export.
+A local-first handwriting studio. This repository is an active reconstruction of the public GPTGenie product, not a clone of its private source code.
 
-## Principles
+## Product direction
 
-- No backend, accounts, telemetry, or API keys.
-- Documents, settings, and handwriting samples are stored in browser IndexedDB.
-- Export a portable JSON workspace backup and restore it on another device.
-- Generate PDF locally; import the resulting PDF into Goodnotes, Notability, or another PDF notebook.
-- Works offline after the app's assets have loaded (PWA/offline caching is a planned enhancement).
+- Build and save a personal glyph library using mouse, touch or stylus.
+- Compose text from editable vector stroke samples.
+- Export multipage PDF locally.
+- Edit pages and export to native notebook formats as the scene graph and format writers mature.
+- Store everything locally; one portable backup contains the complete workspace.
 
 ## Stack
 
-- React + TypeScript + Vite
+- React 19 + TypeScript + Vite
 - IndexedDB for local persistence
-- pdf-lib for client-side PDF creation
-- Canvas Pointer Events for mouse, touch, and stylus handwriting capture
+- Canvas Pointer Events for pressure-aware handwriting capture
+- Shared vector layout engine
+- pdf-lib for PDF generation
+- Vite PWA shell and service-worker asset cache
 
 ## Run
 
 ```bash
-pnpm install
-pnpm dev
+npm install
+npm run dev
 ```
 
-Build with `pnpm build`.
+Build with `npm run build`; check types with `npm run typecheck`.
 
-## Current scope
+## Implemented in this branch
 
-The editor, local document library, character sample capture, PDF page templates (A4/Letter/A5, lined/blank/grid/dotted), and JSON backup/restore are implemented. Saved character samples are composited into PDF exports where a matching character is available; untrained characters use a standard fallback font.
+- Three-stage workspace: handwriting, create notes, documents.
+- Sample glyph capture as vector point strokes plus PNG preview.
+- Character variants and character grid.
+- Fast Scan flow and missing-character report for included script sets.
+- Included sample character sets: German, English, Russian, Greek, Arabic, Hebrew and Japanese kana. This is not yet the full 50+ language coverage of the reference product.
+- Settings for page size, paper style, ink colour, size, line spacing, margins, letter/word spacing and variation.
+- Shared vector text composition and multipage PDF export.
+- IndexedDB persistence and JSON workspace backup/restore.
+- PWA manifest and same-origin service-worker cache.
 
-## Data portability
+## Not yet implemented / not yet verified
 
-Use **Settings & backup → Export complete backup** to download one JSON file containing settings, documents, and handwriting PNG samples. Restore it in another browser using the same panel. Browser storage is local to the browser profile and can be cleared by browser settings; keep backups for safekeeping.
+- Full 50+ script catalogue, Arabic shaping, Hebrew bidi/mixed direction, contextual glyph forms and Japanese typesetting.
+- Connected cursive, mathematical shorthand and rich inline formatting.
+- Full multi-page PDF editor with lasso, transform, clipboard, partial eraser, image insertion and undo history.
+- Native Goodnotes writer. The format is proprietary and the public reverse-engineering sources found so far are parsers, not validated writers. We have documented the technical path and acceptance tests in docs/Goodnotes-format-research.md.
+- Samsung Notes, OneNote, Notability, Freenotes and Noteful writers.
+- Production browser QA, tablet/stylus QA and Goodnotes round-trip validation.
 
-## Goodnotes
+## Local data and backups
 
-The app exports standards-based PDF documents, not a proprietary Goodnotes package. Import the PDF into Goodnotes to annotate it with native Goodnotes tools. PDF exports preserve layout and rasterised custom glyphs; PDF text is not a fully editable Goodnotes text object.
+The app stores glyphs, vector strokes, documents, presets and settings in IndexedDB. Browser storage is tied to the local browser profile and may be cleared by the user or browser. Use **Settings & backup → Export complete backup** to save one JSON file. Restore it in another browser to move the workspace. Keep backups in a safe location.
 
-## Privacy
+## Privacy and offline
 
-All workspace content and PDF generation remain in the browser. The Google Fonts import is optional visual styling and may contact Google's font CDN; system font fallbacks are provided. For a strict network-free deployment, replace the font import with locally bundled fonts.
+The application does not require a backend, account, telemetry or AI provider. Its current UI and PDF generation run in the browser. The PWA service worker caches same-origin assets after first load; first installation still requires the app to be served once. No external font CDN is used.
+
+## REA
+
+The REA 2.0 skill and reference files are vendored under `.agents/skills/rea`. Evidence inventory, limitations, acceptance criteria and backlog are in `docs/`.
