@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { unzipSync } from 'fflate';
+import { PDFDocument } from 'pdf-lib';
 import { makeGoodnotes } from './goodnotes';
 import type { Glyph } from '../storage';
 
@@ -73,6 +74,15 @@ describe('Goodnotes archive writer', () => {
     expect(events).toHaveLength(6);
     const attachmentPath = names.find(n => n.startsWith('attachments/'))!;
     expect(new TextDecoder().decode(archive[attachmentPath].slice(0, 4))).toBe('%PDF');
+  });
+
+  it('keeps a custom image as part of the separate Goodnotes paper PDF', async () => {
+    const withPhoto = { ...settings, backgroundImage: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAIAAAD91JpzAAAAFklEQVR4nGN89uEXAwMDEwMDAwMDAwAh1gLU+YtJ5wAAAABJRU5ErkJggg==', backgroundImageScale: 120, backgroundImageRotation: 8, backgroundImageX: 4, backgroundImageY: -3 };
+    const blob = await makeGoodnotes('a', 'Goodnotes photo paper', withPhoto, [glyph]);
+    const archive = unzipSync(new Uint8Array(await blob.arrayBuffer()));
+    const attachmentPath = Object.keys(archive).find(n => n.startsWith('attachments/'))!;
+    const pdf = await PDFDocument.load(archive[attachmentPath]);
+    expect(pdf.getPageCount()).toBe(1);
   });
 
   it('emits a page-event group and note file for each composed page', async () => {
