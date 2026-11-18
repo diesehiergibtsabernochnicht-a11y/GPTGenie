@@ -20,7 +20,7 @@
 ## Current implementation status
 
 - Implemented foundation: character capture, vector stroke storage, variants in data model, Fast Scan, initial script sets, baseline metadata, text composition, SVG scene preview with page navigation, multipage PDF, paper templates, IndexedDB, JSON backup/restore and PWA shell.
-- Partial: variant editing, missing-character UX, mathematical shorthand, paper alignment, settings and experimental Goodnotes serialization.
+- Partial: variant editing, missing-character UX, advanced equation layout, paper alignment, settings and experimental Goodnotes serialization. The math engine now lays out stacked fractions, square roots, superscripts and subscripts from a recursive formula AST.
 - Absent: full page editor, full settings parity, 50+ scripts and shaping, stacked equation layout, destination-app validated native exports and other notebook writers.
 - See REA-feature-inventory.md, REA-workflows.md, REA-verification.md and REA-backlog.md for feature-level detail.
 
