@@ -9,7 +9,7 @@ Classification: Observed = exposed in UI or documented by GPTGenie; inferred = i
 - Draw glyphs using mouse, touch or stylus; save multiple versions per character.
 - Fast Scan sequentially guides through the active script; missing-only mode and faint template are documented.
 - German UI shows 114 characters. Missing glyphs are reported before generation; user may draw them or continue.
-- Saved glyph variants can be reopened and edited; a sample count appears in the character grid.
+- Saved glyph variants can be reopened, edited in place, saved as new versions and deleted; a sample count appears in the character grid. Custom Unicode symbols can be added.
 - Five pen styles: felt-tip, ballpoint, fountain, brush, pencil. Pressure affects stylus strokes; speed can influence mouse/finger strokes.
 - Character shape variation can select/interpolate versions per occurrence; setting ranges from off to strong.
 - Connected German cursive is supported.
@@ -24,7 +24,7 @@ Classification: Observed = exposed in UI or documented by GPTGenie; inferred = i
 - Multiline text, paragraphs, line breaks and multipage generation.
 - Bold markup with **text**; coloured marker markup such as ==text== and ==green:text==.
 - Mathematical shorthand for fractions, superscripts and roots. The rebuild has basic LaTeX-like normalization and a symbol palette, but stacked fractions/scalable roots are not implemented.
-- Settings: ink colour, character size, character spacing, word spacing, baseline/position irregularity, variation strength, line spacing, optional rule snapping, line slope/wave, left/right/top/bottom margins and left-margin irregularity.
+- Settings: ink colour, character size, character spacing, word spacing, baseline/position irregularity, variation strength, line spacing, optional rule snapping, line slope/wave, left/right/top/bottom margins and left-margin irregularity. The rebuild now has four margins, slope/wave, rule snapping, margin jitter and a 10-preset cap.
 - Up to 10 saved settings presets, live preview and reset/defaults.
 
 ## Paper, preview and editor
@@ -48,7 +48,7 @@ Classification: Observed = exposed in UI or documented by GPTGenie; inferred = i
 Goodnotes officially imports .goodnotes documents and .goodnotes.zip backups. The inspected user samples and public parser research support a ZIP container with page records, protobuf indexes, attachments, Apple-framed LZ4 and TPL stroke geometry. The one-page experimental candidate imported without error, but it reused page/attachment identifiers and the background PDF from the supplied fixture. The app now contains an experimental repeatable writer that creates fresh IDs, per-page notes streams, page-event records and a separate PDF background attachment. It is structurally tested in CI but has not yet been imported into Goodnotes from the current app code; editability and cross-version compatibility remain unknown.
 
 ## Rebuild status snapshot
-- Implemented foundation: vector glyph capture, multiple samples in the data model, Fast Scan, initial script sets, basic text composition, multipage PDF, paper templates, IndexedDB and JSON backup/restore.
+- Implemented foundation: vector glyph capture, multiple-sample selection/edit/delete, custom Unicode symbols, resumable Fast Scan, initial script sets, baseline-aware text composition, SVG page preview, multipage PDF, paper templates and settings, IndexedDB and JSON backup/restore.
 - Partial: saved-variant editing, missing glyph UX, maths, paper alignment and settings.
 - Absent: full PDF editor, full settings parity, 50+ scripts/shaping, full equation layout, Goodnotes destination-app validation/brush fidelity and secondary native exporters. The vector preview and experimental Goodnotes writer are now present.
 - Exact acceptance criteria and pass/fail/unknown results are maintained in docs/REA-verification.md.
